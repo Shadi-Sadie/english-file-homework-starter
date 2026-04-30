@@ -35,6 +35,36 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .xcard-head p{font-size:12px;color:var(--txt2);margin-top:2px}
 .xcard-body{padding:1rem 1.1rem}
 .q-item{margin-bottom:1rem}.q-item:last-child{margin-bottom:0}
+.vocab-photo{width:100%;height:132px;object-fit:contain;border:1px solid var(--bdr);border-radius:8px;background:#f8fbff;display:block;margin-bottom:8px;padding:8px;transition:transform .15s}
+.q-item:hover .vocab-photo{transform:translateY(-1px)}
+.word-bank{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem;padding:10px;border:1px solid var(--bdr);border-radius:var(--rs);background:#f8fbff}
+.word-bank span{padding:5px 9px;border-radius:999px;background:#fff;border:1px solid #85B7EB;color:#0C447C;font-size:13px;font-weight:600}
+.phrase-bank{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;padding:10px;border:1px solid var(--bdr);border-radius:var(--rs);background:#fff8ea}
+.phrase-bank span{padding:6px 9px;border-radius:6px;background:#fff;border:1px solid #EFD088;color:#70410d;font-size:13px;line-height:1.25}
+.phrase-bank span.used{text-decoration:line-through;color:var(--txt2);background:#f4f2ec;border-color:var(--bdr)}
+.phrase-book{display:grid;gap:9px}
+.phrase-card{display:grid;grid-template-columns:28px minmax(0,1fr);gap:9px;padding:10px;border:1px solid var(--bdr);border-radius:var(--rs);background:#fff}
+.phrase-card.example{background:#f7f5ee}
+.dialogue{display:grid;gap:6px}
+.dialogue p{display:flex;gap:7px;align-items:baseline;flex-wrap:wrap;font-size:14px;line-height:1.45}
+.speaker{font-weight:700;min-width:16px}
+.example-answer{text-decoration:underline;font-style:italic}
+.phrase-select{width:min(100%,330px);padding:8px 9px;border:1px solid var(--bdr);border-radius:var(--rs);background:#fff;color:var(--txt);font-size:14px}
+.phrase-select.ok{border-color:var(--grn-m);background:var(--grn-l);color:var(--grn)}
+.phrase-select.no{border-color:var(--red-m);background:var(--red-l);color:var(--red)}
+.verb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.verb-card{border:1px solid var(--bdr);border-radius:var(--rs);background:#fff;overflow:hidden}
+.verb-card .vocab-photo{aspect-ratio:1/1;height:auto;max-height:none;border:none;border-bottom:1px solid var(--bdr);border-radius:0;margin:0;padding:0;background:#fff;object-fit:contain;box-sizing:border-box}
+.verb-line{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px;align-items:start;padding:8px;font-size:13px;line-height:1.35}
+.verb-line .qnum{min-width:20px;height:20px;font-size:10px;margin-top:1px}
+.verb-answer{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap}
+.verb-answer input{width:74px;max-width:100%;padding:5px 6px;border:1px solid var(--bdr);border-radius:6px;font-size:13px}
+.verb-answer input.ok{border-color:var(--grn-m);background:var(--grn-l);color:var(--grn)}
+.verb-answer input.no{border-color:var(--red-m);background:var(--red-l);color:var(--red)}
+.verb-actions{margin-top:12px;display:flex;gap:8px;align-items:center}
+.verb-actions .chk{flex:0 0 auto}
+@media(max-width:520px){.verb-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:360px){.verb-grid{grid-template-columns:1fr}}
 .ql{font-size:14px;margin-bottom:7px;line-height:1.5;display:flex;align-items:flex-start;gap:8px}
 .qnum{min-width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
 .opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
@@ -127,8 +157,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 <div id="tvoc" class="sec">
   <div class="scorebar"><span class="sl">Score</span><span class="sv" id="sc-voc">0 / 0</span><button class="rst" onclick="resetSec('tvoc','voc')">Reset</button></div>
   <div class="xcard">
-    <div class="xcard-head"><div class="ico" style="background:#E6F1FB">🔤</div><div><h2>Common verb phrases</h2><p>Choose the correct verb for each phrase</p></div></div>
+    <div class="xcard-head"><div class="ico" style="background:#E6F1FB">🔤</div><div><h2>Common verb phrases</h2><p>Write the verb from the box</p></div></div>
     <div class="xcard-body" id="b-verbs"></div>
+  </div>
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:var(--amb-l)">📖</div><div><h2>Words and phrases to learn</h2><p>Complete the conversations with a phrase from the list</p></div></div>
+    <div class="xcard-body" id="b-phrases"></div>
   </div>
 </div>
 
@@ -203,8 +237,10 @@ function updateSummary(){
 }
 function resetSec(sid,sk2){
   document.getElementById(sid).querySelectorAll('input').forEach(i=>{i.value='';i.disabled=false;i.className='';});
+  document.getElementById(sid).querySelectorAll('select').forEach(s=>{s.selectedIndex=0;s.disabled=false;s.className='phrase-select';});
   document.getElementById(sid).querySelectorAll('.opt').forEach(o=>{o.className='opt';o.disabled=false;});
   document.getElementById(sid).querySelectorAll('.fb').forEach(f=>{f.textContent='';f.className='fb';});
+  document.getElementById(sid).querySelectorAll('.chk').forEach(b=>{b.disabled=false;});
   Object.keys(S).filter(k=>k.startsWith(sk2)).forEach(k=>delete S[k]);
   const el=document.getElementById('sc-'+sk2);if(el)el.textContent='0 / 0';
 }
@@ -213,7 +249,8 @@ function mcqBlock(el,qs,prefix){
   qs.forEach((q,i)=>{
     if(i>0){const hr=document.createElement('hr');hr.className='divhr';el.appendChild(hr);}
     const d=document.createElement('div');d.className='q-item';const key=prefix+i;
-    d.innerHTML=`<div class="ql"><div class="qnum">${i+1}</div><span>${q.q}</span></div><div class="opts">${q.opts.map(o=>`<button class="opt" data-v="${o}" data-ans="${q.ans}" data-key="${key}" data-qq="${q.q.replace(/"/g,"'")}" onclick="pickOpt(this)"><div class="ob"></div><span>${o}</span></button>`).join('')}</div><div class="fb" id="fb-${key}"></div>`;
+    const img=q.img?`<img class="vocab-photo" src="${q.img}" alt="${q.alt||q.ans}">`:'';
+    d.innerHTML=`${img}<div class="ql"><div class="qnum">${i+1}</div><span>${q.q}</span></div><div class="opts">${q.opts.map(o=>`<button class="opt" data-v="${o}" data-ans="${q.ans}" data-key="${key}" data-qq="${q.q.replace(/"/g,"'")}" onclick="pickOpt(this)"><div class="ob"></div><span>${o}</span></button>`).join('')}</div><div class="fb" id="fb-${key}"></div>`;
     el.appendChild(d);
   });
 }
@@ -230,6 +267,7 @@ function textBlock(el,qs,prefix){
   qs.forEach((q,i)=>{
     if(i>0){const hr=document.createElement('hr');hr.className='divhr';el.appendChild(hr);}
     const d=document.createElement('div');d.className='q-item';
+    if(q.img){const im=document.createElement('img');im.src=q.img;im.alt=q.alt||q.ans;im.className='vocab-photo';d.appendChild(im);}
     const key=prefix+i;
     const inp=document.createElement('input');
     inp.type='text';inp.id='ti-'+key;inp.placeholder='Type your answer…';
@@ -260,6 +298,95 @@ function chkText(inp){
   else{inp.className='no';fb.textContent='✗ Correct answer: '+ans.split('|')[0];fb.className='fb no';}
   addS(key,ok,inp.id,inp.value,ans.split('|')[0]);
   updateSc(key);
+}
+function verbGridBlock(el,qs,prefix){
+  const grid=document.createElement('div');grid.className='verb-grid';
+  qs.forEach((q,i)=>{
+    const key=prefix+i;
+    const card=document.createElement('div');card.className='verb-card';
+    const img=document.createElement('img');img.className='vocab-photo';img.src=q.img;img.alt=q.alt||q.tail;
+    const line=document.createElement('div');line.className='verb-line';
+    line.innerHTML=`<div class="qnum">${i+1}</div><div class="verb-answer"><input id="vi-${key}" data-key="${key}" data-ans="${q.ans}" data-q="${q.tail.replace(/"/g,"'")}" autocomplete="off"><span>${q.tail}</span></div>`;
+    card.appendChild(img);card.appendChild(line);grid.appendChild(card);
+  });
+  const actions=document.createElement('div');actions.className='verb-actions';
+  const btn=document.createElement('button');btn.className='chk';btn.textContent='Check answers';
+  const fb=document.createElement('div');fb.className='fb';fb.id='fb-'+prefix+'all';
+  btn.addEventListener('click',function(){
+    let r=0;
+    qs.forEach((q,i)=>{
+      const key=prefix+i;
+      const inp=document.getElementById('vi-'+key);
+      if(!inp||inp.disabled)return;
+      const ok=norm(inp.value)===norm(q.ans);
+      inp.className=ok?'ok':'no';
+      inp.disabled=true;
+      if(ok)r++;
+      addS(key,ok,'___ '+q.tail,inp.value,q.ans);updateSc(key);
+    });
+    fb.textContent=r+' / '+qs.length+' correct';
+    fb.className='fb '+(r===qs.length?'ok':'no');
+    btn.disabled=true;
+  });
+  actions.appendChild(btn);actions.appendChild(fb);
+  el.appendChild(grid);el.appendChild(actions);
+}
+function phraseChoiceBlock(el,phrases,qs,prefix){
+  const bank=document.createElement('div');bank.className='phrase-bank';
+  phrases.forEach(p=>{
+    const chip=document.createElement('span');chip.textContent=p.text;
+    if(p.used)chip.className='used';
+    bank.appendChild(chip);
+  });
+  el.appendChild(bank);
+  const book=document.createElement('div');book.className='phrase-book';
+  const ex=document.createElement('div');ex.className='phrase-card example';
+  ex.innerHTML='<div class="qnum">1</div><div class="dialogue"><p><span class="speaker">A</span><span class="example-answer">Can I see your passport and boarding pass, please?</span></p><p><span class="speaker">B</span><span>Yes, here you are.</span></p></div>';
+  book.appendChild(ex);
+  const options=phrases.filter(p=>!p.used).map(p=>p.text);
+  qs.forEach((q,i)=>{
+    const key=prefix+i;
+    const card=document.createElement('div');card.className='phrase-card';
+    const num=document.createElement('div');num.className='qnum';num.textContent=q.no;
+    const dlg=document.createElement('div');dlg.className='dialogue';
+    q.lines.forEach(line=>{
+      const p=document.createElement('p');
+      const sp=document.createElement('span');sp.className='speaker';sp.textContent=line.speaker;
+      p.appendChild(sp);
+      if(line.text){const txt=document.createElement('span');txt.textContent=line.text;p.appendChild(txt);}
+      if(line.blank){
+        const sel=document.createElement('select');sel.className='phrase-select';sel.id='pi-'+key;
+        sel.dataset.key=key;sel.dataset.ans=q.ans;sel.dataset.q=q.log;
+        const empty=document.createElement('option');empty.value='';empty.textContent='Choose a phrase...';sel.appendChild(empty);
+        options.forEach(o=>{const opt=document.createElement('option');opt.value=o;opt.textContent=o;sel.appendChild(opt);});
+        p.appendChild(sel);
+        if(line.suffix){const suf=document.createElement('span');suf.textContent=line.suffix;p.appendChild(suf);}
+      }
+      dlg.appendChild(p);
+    });
+    card.appendChild(num);card.appendChild(dlg);book.appendChild(card);
+  });
+  const actions=document.createElement('div');actions.className='verb-actions';
+  const btn=document.createElement('button');btn.className='chk';btn.textContent='Check answers';
+  const fb=document.createElement('div');fb.className='fb';fb.id='fb-'+prefix+'all';
+  btn.addEventListener('click',function(){
+    let r=0;
+    qs.forEach((q,i)=>{
+      const key=prefix+i;
+      const sel=document.getElementById('pi-'+key);
+      if(!sel||sel.disabled)return;
+      const ok=norm(sel.value)===norm(q.ans);
+      sel.classList.add(ok?'ok':'no');
+      sel.disabled=true;
+      if(ok)r++;
+      addS(key,ok,q.log,sel.value||'(blank)',q.ans);updateSc(key);
+    });
+    fb.textContent=r+' / '+qs.length+' correct';
+    fb.className='fb '+(r===qs.length?'ok':'no');
+    btn.disabled=true;
+  });
+  actions.appendChild(btn);actions.appendChild(fb);
+  el.appendChild(book);el.appendChild(actions);
 }
 function playAudio(id,btn){
   const a=audios[id];if(!a){alert('Audio loading, please try again.');return;}
@@ -342,13 +469,13 @@ window.addEventListener('DOMContentLoaded',function(){
     {q:'Question 6 → Yes, I do. It\'s very interesting. (Do you like ___ ?)',ans:'Do you like your job'},
   ],'gram0_');
   textBlock(document.getElementById('b-complete'),[
-    {q:'We don\'t live in an apartment. B: ___ you live in a house?',ans:'Do you live'},
-    {q:'I don\'t want a newspaper. B: Do you want ___ a magazine?',ans:'Do you want|do you want a magazine'},
-    {q:'They don\'t like dogs. B: Do they like ___?',ans:'Do they like cats|cats'},
-    {q:'I don\'t have a camera. B: Do you have ___ a phone?',ans:'Do you have|do you have a phone'},
-    {q:'I don\'t drink tea. B: Do you drink ___ coffee?',ans:'Do you drink|do you drink coffee'},
-    {q:'We don\'t have breakfast. B: Do you have ___ lunch?',ans:'Do you have|do you have lunch'},
-    {q:'I don\'t need a new phone. B: Do you need ___ a tablet?',ans:'Do you need|do you need a tablet'},
+    {q:'We don\'t live in an apartment. B: ___ in a house?',ans:'Do you live'},
+    {q:'I don\'t want a newspaper. B: ___ a magazine?',ans:'Do you want'},
+    {q:'They don\'t like dogs. B: ___ cats?',ans:'Do they like'},
+    {q:'I don\'t have a camera. B: ___ a phone?',ans:'Do you have'},
+    {q:'I don\'t drink tea. B: ___ coffee?',ans:'Do you drink'},
+    {q:'We don\'t have breakfast. B: ___ lunch?',ans:'Do you have'},
+    {q:'I don\'t need a new phone. B: ___ tablet?',ans:'Do you need a new|Do you need a new tablet'},
   ],'gram1_');
   mcqBlock(document.getElementById('b-doordont'),[
     {q:'Jon: "___ you have a car, Rachel?"',opts:['Do','Does','Don\'t','Doesn\'t'],ans:'Do'},
@@ -360,37 +487,61 @@ window.addEventListener('DOMContentLoaded',function(){
     {q:'Jon: "___ you like tea?"',opts:['Do','Does','Don\'t','Doesn\'t'],ans:'Do'},
     {q:'Rachel: "Yes, I ___."',opts:['do','does','don\'t','doesn\'t'],ans:'do'},
   ],'gram2_');
-  mcqBlock(document.getElementById('b-verbs'),[
-    {q:'1 ___ lunch (picture: eating at table)',opts:['have','go','do','watch'],ans:'have'},
-    {q:'2 ___ cats (picture: petting cats)',opts:['have','go','do','watch'],ans:'have'},
-    {q:'3 ___ milk (picture: drinking milk)',opts:['drink','eat','go','watch'],ans:'drink'},
-    {q:'4 ___ Chinese (picture: speaking Chinese)',opts:['speak','study','read','listen'],ans:'speak'},
-    {q:'5 ___ Mexican food (picture: eating tacos)',opts:['eat','drink','go','watch'],ans:'eat'},
-    {q:'6 ___ magazines (picture: reading)',opts:['read','watch','listen','study'],ans:'read'},
-    {q:'7 ___ a new car (picture: wanting car)',opts:['want','need','have','go'],ans:'want'},
-    {q:'8 ___ to Brazilian music (picture: headphones)',opts:['listen','watch','speak','read'],ans:'listen'},
-    {q:'9 ___ in a bank (picture: office)',opts:['work','live','study','go'],ans:'work'},
-    {q:'10 ___ in a house (picture: house)',opts:['live','work','go','study'],ans:'live'},
-    {q:'11 ___ TV in the evening',opts:['watch','listen','read','study'],ans:'watch'},
-    {q:'12 ___ three dogs (picture: dogs)',opts:['have','want','need','like'],ans:'have'},
-    {q:'13 ___ Spanish (picture: studying language)',opts:['study','speak','read','go'],ans:'study'},
-    {q:'14 ___ to English classes',opts:['go','walk','study','listen'],ans:'go'},
-    {q:'15 ___ a coffee (picture: coffee cup)',opts:['have','drink','eat','go'],ans:'have'},
+  document.getElementById('b-verbs').insertAdjacentHTML('beforeend','<div class="word-bank"><span>drink</span><span>eat</span><span>go</span><span>have</span><span>have</span><span>listen</span><span>like</span><span>live</span><span>need</span><span>read</span><span>speak</span><span>study</span><span>want</span><span>watch</span><span>work</span></div>');
+  verbGridBlock(document.getElementById('b-verbs'),[
+    {tail:'lunch',ans:'have',img:'images/unit5b/vocab-00.png',alt:'person eating lunch'},
+    {tail:'cats',ans:'like',img:'images/unit5b/vocab-01.png',alt:'person with cats'},
+    {tail:'milk',ans:'drink',img:'images/unit5b/vocab-02.png',alt:'person drinking milk'},
+    {tail:'Chinese',ans:'speak',img:'images/unit5b/vocab-03.png',alt:'people speaking Chinese'},
+    {tail:'Mexican food',ans:'eat',img:'images/unit5b/vocab-04.png',alt:'person eating Mexican food'},
+    {tail:'magazines',ans:'read',img:'images/unit5b/vocab-05.png',alt:'person reading magazines'},
+    {tail:'a new car',ans:'need',img:'images/unit5b/vocab-06.png',alt:'person beside a broken car'},
+    {tail:'to Brazilian music',ans:'listen',img:'images/unit5b/vocab-07.png',alt:'person listening to Brazilian music'},
+    {tail:'in a bank',ans:'work',img:'images/unit5b/vocab-08.png',alt:'person working in a bank'},
+    {tail:'in a house',ans:'live',img:'images/unit5b/vocab-09.png',alt:'person in front of a house'},
+    {tail:'TV in the evening',ans:'watch',img:'images/unit5b/vocab-10.png',alt:'person watching TV in the evening'},
+    {tail:'three dogs',ans:'have',img:'images/unit5b/vocab-11.png',alt:'person with three dogs'},
+    {tail:'Spanish',ans:'study',img:'images/unit5b/vocab-12.png',alt:'person studying Spanish'},
+    {tail:'to English classes',ans:'go',img:'images/unit5b/vocab-13.png',alt:'student going to English class'},
+    {tail:'a coffee',ans:'want',img:'images/unit5b/vocab-14.png',alt:'person wanting coffee'},
   ],'voc0_');
   mcqBlock(document.getElementById('b-pron3'),[
     {q:'Track 5.3 — /w/ (witch) or /v/ (vase)? WITCH sound: "want"',opts:['/w/ witch','/v/ vase'],ans:'/w/ witch'},
     {q:'Track 5.3 — /w/ (witch) or /v/ (vase)? VASE sound: "very"',opts:['/w/ witch','/v/ vase'],ans:'/v/ vase'},
-    {q:'Track 5.3 — "visit" belongs in which column?',opts:['/w/ witch','/v/ vase'],ans:'/v/ vase'},
+    {q:'Track 5.3 — "where" belongs in which column?',opts:['/w/ witch','/v/ vase'],ans:'/w/ witch'},
+    {q:'Track 5.3 — "live" belongs in which column?',opts:['/w/ witch','/v/ vase'],ans:'/v/ vase'},
+    {q:'Track 5.3 — "when" belongs in which column?',opts:['/w/ witch','/v/ vase'],ans:'/w/ witch'},
     {q:'Track 5.3 — "work" belongs in which column?',opts:['/w/ witch','/v/ vase'],ans:'/w/ witch'},
-    {q:'Track 5.3 — "vocabulary" belongs in which column?',opts:['/w/ witch','/v/ vase'],ans:'/v/ vase'},
-    {q:'Track 5.3 — "we" belongs in which column?',opts:['/w/ witch','/v/ vase'],ans:'/w/ witch'},
+    {q:'Track 5.3 — "TV" belongs in which column?',opts:['/w/ witch','/v/ vase'],ans:'/v/ vase'},
+    {q:'Track 5.3 — "have" belongs in which column?',opts:['/w/ witch','/v/ vase'],ans:'/v/ vase'},
   ],'pron0_');
   textBlock(document.getElementById('b-pron4'),[
-    {q:'Track 5.4 — Complete: "Do you want ___ a sandwich?"',ans:'a|Do you want a sandwich'},
-    {q:'Track 5.4 — Complete: "I ___ a brother and ___ a teacher."',ans:'have|am|I have a brother and am a teacher'},
+    {q:'Track 5.4 — Complete: "Do you want ___ sandwich?"',ans:'a|a sandwich'},
+    {q:'Track 5.4 — Complete: "I ___ brother..."',ans:'have a'},
+    {q:'Track 5.4 — Complete: "...and ___ teacher."',ans:'he\'s a|he is a'},
     {q:'Track 5.4 — Complete: "I ___ a house in a small city."',ans:'live in|live|I live in a house in a small city'},
-    {q:'Track 5.4 — Complete: "I ___ TV."',ans:'watch|watch TV'},
+    {q:'Track 5.4 — Complete: "I ___ TV."',ans:'watch a lot of'},
   ],'pron1_');
+  phraseChoiceBlock(document.getElementById('b-phrases'),[
+    {text:'Can I see your passport and boarding pass, please',used:true},
+    {text:'Do you want fish or pasta'},
+    {text:'keep the change'},
+    {text:'What time do we arrive'},
+  ],[
+    {no:2,ans:'Do you want fish or pasta',log:'A: Excuse me, ma\'am. ___? B: Fish, please.',lines:[
+      {speaker:'A',text:'Excuse me, ma\'am.'},
+      {speaker:'A',blank:true,suffix:'?'},
+      {speaker:'B',text:'Fish, please.'},
+    ]},
+    {no:3,ans:'What time do we arrive',log:'A: ___? B: In 15 minutes, sir.',lines:[
+      {speaker:'A',blank:true,suffix:'?'},
+      {speaker:'B',text:'In 15 minutes, sir.'},
+    ]},
+    {no:4,ans:'keep the change',log:'A: That\'s $4.75, please. B: Here you are - ___.',lines:[
+      {speaker:'A',text:'That\'s $4.75, please.'},
+      {speaker:'B',text:'Here you are -',blank:true,suffix:'.'},
+    ]},
+  ],'voc1_');
 });
 </script>
 </body></html>
