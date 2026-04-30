@@ -335,7 +335,7 @@ async function submitWork(){
     if(!keys.length)return;
     let sr=0,st=0;keys.forEach(k=>{sr+=S[k].r;st+=S[k].t;});
     const spct=st>0?Math.round(sr/st*100):0;
-    msg+=NL+secNames[sec]+': *'+sr+'/'+st+' ('+spct+'%)*'+NL;
+    msg+=NL+secNames[sec]+': <b>'+sr+'/'+st+' ('+spct+'%)</b>'+NL;
     keys.forEach(k=>{S[k].ans.forEach(a=>{
       const qshort=a.q.replace(/<[^>]+>/g,'').substring(0,38);
       msg+=(a.ok?'✅':'❌')+' '+qshort+NL;
@@ -343,13 +343,13 @@ async function submitWork(){
     });});
   });
   msg+=NL+DIV+NL;
-  if(pct===100)msg+='🎉 *Perfect score! Excellent work '+name+'!*';
-  else if(pct>=80)msg+='👏 *Great job '+name+'! Almost perfect!*';
-  else if(pct>=60)msg+='👍 *Good effort '+name+'! Keep it up!*';
-  else msg+='💪 *Keep practicing '+name+'! You can do it!*';
+  if(pct===100)msg+='🎉 <b>Perfect score! Excellent work '+name+'!</b>';
+  else if(pct>=80)msg+='👏 <b>Great job '+name+'! Almost perfect!</b>';
+  else if(pct>=60)msg+='👍 <b>Good effort '+name+'! Keep it up!</b>';
+  else msg+='💪 <b>Keep practicing '+name+'! You can do it!</b>';
   const url='/.netlify/functions/sendMessage';
   try{
-    const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chatId:CHATID,text:msg,parse_mode:'Markdown'})});
+    const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chatId:CHATID,text:msg,parse_mode:'HTML'})});
     const data=await res.json();
     if(data.ok){
       document.getElementById('sent-msg').style.display='block';
