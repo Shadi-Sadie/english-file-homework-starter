@@ -180,7 +180,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 <script>
 
 
-const BTOKEN='YOUR_BOT_TOKEN_HERE';
 const CHATID='YOUR_CHAT_ID_HERE';
 const audios={};
 const S={};
@@ -316,9 +315,9 @@ async function submitWork(){
   else if(pct>=80)msg+='👏 *Great job '+name+'! Almost perfect!*';
   else if(pct>=60)msg+='👍 *Good effort '+name+'! Keep it up!*';
   else msg+='💪 *Keep practicing '+name+'! You can do it!*';
-  const url='https://api.telegram.org/bot'+BTOKEN+'/sendMessage';
+  const url='/.netlify/functions/sendMessage';
   try{
-    const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:CHATID,text:msg,parse_mode:'Markdown'})});
+    const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chatId:CHATID,text:msg,parse_mode:'Markdown'})});
     const data=await res.json();
     if(data.ok){
       document.getElementById('sent-msg').style.display='block';
