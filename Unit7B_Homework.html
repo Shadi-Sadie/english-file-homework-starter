@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Unit 7B Homework — AEF Starter</title>
+<style>
+:root{--grn:#3B6D11;--grn-l:#EAF3DE;--grn-m:#639922;--red:#A32D2D;--red-l:#FCEBEB;--red-m:#E24B4A;--amb:#BA7517;--amb-l:#FAEEDA;--teal:#0F6E56;--teal-l:#E1F5EE;--gray:#5F5E5A;--gray-l:#F1EFE8;--bg:#f5f4f1;--white:#fff;--bdr:rgba(0,0,0,0.1);--txt:#1a1a18;--txt2:#5F5E5A;--r:12px;--rs:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+.app{max-width:600px;margin:0 auto;padding-bottom:3rem}
+.hero{padding:1.5rem 1.25rem 1.25rem}
+.hero-top{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
+.hero-icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.hero h1{font-size:20px;font-weight:700;color:#fff}
+.hero p{font-size:13px;margin-top:2px;opacity:0.75;color:#fff}
+.name-row input{width:100%;padding:10px 13px;border-radius:var(--rs);border:none;font-size:15px;background:rgba(255,255,255,0.18);color:#fff}
+.name-row input::placeholder{color:rgba(255,255,255,0.55)}
+.name-row input:focus{outline:2px solid rgba(255,255,255,0.4)}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:1rem 1rem 0;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{white-space:nowrap;padding:8px 16px;border-radius:20px;border:1px solid var(--bdr);font-size:13px;font-weight:500;cursor:pointer;background:var(--white);color:var(--txt2);transition:all .15s}
+.content{padding:1rem}
+.sec{display:none}.sec.on{display:block}
+.scorebar{background:var(--white);border:1px solid var(--bdr);border-radius:var(--rs);padding:10px 14px;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between}
+.scorebar .sl{font-size:13px;color:var(--txt2)}
+.scorebar .sv{font-size:20px;font-weight:700}
+.rst{padding:5px 12px;border-radius:16px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--white);color:var(--txt2)}
+.xcard{background:var(--white);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;margin-bottom:1rem}
+.xcard-head{padding:.9rem 1.1rem;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px}
+.ico{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.xcard-head h2{font-size:15px;font-weight:700}
+.xcard-head p{font-size:12px;color:var(--txt2);margin-top:2px}
+.xcard-body{padding:1rem 1.1rem}
+.q-item{margin-bottom:1rem}.q-item:last-child{margin-bottom:0}
+.ql{font-size:14px;margin-bottom:7px;line-height:1.5;display:flex;align-items:flex-start;gap:8px}
+.qnum{min-width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.opt{padding:9px 10px;border:1px solid var(--bdr);border-radius:var(--rs);cursor:pointer;font-size:14px;background:var(--white);color:var(--txt);text-align:left;display:flex;align-items:center;gap:7px;transition:all .12s}
+.opt:hover{background:var(--gray-l)}
+.opt .ob{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--bdr);flex-shrink:0}
+.opt.ok{background:var(--grn-l);border-color:var(--grn-m)}.opt.ok .ob{background:var(--grn-m);border-color:var(--grn-m)}
+.opt.no{background:var(--red-l);border-color:var(--red-m)}.opt.no .ob{background:var(--red-m);border-color:var(--red-m)}
+.opt.hl{background:var(--grn-l);border-color:var(--grn-m);opacity:.5}.opt.hl .ob{background:var(--grn-m);border-color:var(--grn-m)}
+.fb{font-size:12px;margin-top:5px;min-height:16px}
+.fb.ok{color:var(--grn)}.fb.no{color:var(--red)}
+.divhr{border:none;border-top:1px solid var(--bdr);margin:1rem 0}
+.audio-box{border-radius:var(--rs);padding:12px 14px;margin-bottom:1rem;display:flex;align-items:center;gap:12px}
+.play-btn{width:42px;height:42px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
+.play-btn svg{width:16px;height:16px}
+.audio-info{flex:1}
+.audio-info .at{font-size:13px;font-weight:600}
+.audio-info .as{font-size:12px;margin-top:1px}
+.audio-bar{height:4px;border-radius:2px;margin-top:7px;overflow:hidden}
+.audio-fill{height:100%;width:0%;transition:width .1s;border-radius:2px}
+.submit-card{background:var(--white);border:1px solid var(--bdr);border-radius:var(--r);padding:1.25rem;margin-top:.5rem}
+.submit-card h3{font-size:17px;font-weight:700;margin-bottom:6px}
+.submit-card p{font-size:13px;color:var(--txt2);margin-bottom:1.25rem;line-height:1.6}
+.score-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1.25rem}
+.sc-box{background:var(--gray-l);border-radius:var(--rs);padding:10px;text-align:center}
+.sc-box .sv{font-size:22px;font-weight:700}
+.sc-box .sl{font-size:11px;color:var(--txt2);margin-top:2px}
+.sub-btn{width:100%;padding:14px;border-radius:var(--rs);border:none;color:#fff;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
+.sub-btn:disabled{background:var(--gray);cursor:not-allowed}
+.sent{background:var(--grn-l);border:1px solid var(--grn-m);border-radius:var(--rs);padding:1rem;color:var(--grn);font-size:14px;text-align:center;display:none;line-height:1.6;font-weight:500;margin-top:1rem}
+.note{font-size:12px;color:var(--txt2);margin-bottom:12px;line-height:1.6;padding:8px 10px;background:var(--gray-l);border-radius:var(--rs)}
+.phrase-box{background:var(--gray-l);border-radius:var(--rs);padding:10px 14px;margin-bottom:14px;font-size:13px;line-height:1.9}
+.story-tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;background:#FEE2E2;color:#9B1C1C;margin-bottom:6px}
+
+/* Crimson theme for Unit 7B */
+.hero{background:#9B1C1C}
+.hero-icon{background:#FEE2E2}
+.tab.on{background:#FEE2E2;color:#7f1d1d;border-color:#EF4444}
+.scorebar .sv{color:#9B1C1C}
+.sc-box .sv{color:#9B1C1C}
+.qnum{background:#FEE2E2;color:#7f1d1d}
+.sub-btn{background:#9B1C1C}.sub-btn:hover{background:#7f1d1d}
+.audio-box{background:#FEE2E2}
+.play-btn{background:#9B1C1C}.play-btn:hover{background:#7f1d1d}
+.audio-info .at{color:#7f1d1d}
+.audio-info .as{color:#9B1C1C}
+.audio-bar{background:#FCA5A5}
+.audio-fill{background:#9B1C1C}
+.text-row{display:flex;gap:6px;align-items:center}
+.text-row input{flex:1;min-width:0;padding:9px 11px;border:1px solid var(--bdr);border-radius:var(--rs);font-size:14px;background:var(--white);color:var(--txt)}
+.text-row input:focus{outline:2px solid var(--bdr)}
+.text-row input.ok{border-color:var(--grn-m);background:var(--grn-l);color:var(--grn)}
+.text-row input.no{border-color:var(--red-m)}
+.chk{padding:9px 14px;border-radius:var(--rs);border:1px solid var(--bdr);font-size:13px;cursor:pointer;background:#9B1C1C;color:#fff;white-space:nowrap;font-weight:500}
+.chk:hover{background:#7f1d1d}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="hero">
+  <div class="hero-top">
+    <div class="hero-icon">🎬</div>
+    <div><h1>Unit 7B Homework</h1><p>Lights, camera, action! · American English File Starter</p></div>
+  </div>
+  <div class="name-row"><input type="text" id="sname" placeholder="✏️  Enter your full name..."></div>
+</div>
+
+<div class="tabs">
+  <button class="tab on" onclick="showTab('tgram',this)">📝 Grammar</button>
+  <button class="tab" onclick="showTab('tvoc',this)">🎬 Vocabulary</button>
+  <button class="tab" onclick="showTab('tpron',this)">🔊 Pronunciation</button>
+  <button class="tab" onclick="showTab('twords',this)">💬 Phrases</button>
+  <button class="tab" onclick="showTab('tsub',this)">📤 Submit</button>
+</div>
+
+<div class="content">
+
+<!-- GRAMMAR -->
+<div id="tgram" class="sec on">
+  <div class="scorebar"><span class="sl">Score</span><span class="sv" id="sc-gram">0 / 0</span><button class="rst" onclick="resetSec('tgram','gram')">Reset</button></div>
+
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#FEE2E2">🗣️</div><div><h2>Exercise 1a — Imperatives</h2><p>Write the correct [+] or [−] imperative from the word list</p></div></div>
+    <div class="xcard-body">
+      <p class="note">Word list: <strong>buy · eat · go · listen · open · relax · sit · use · watch · worry</strong><br>Example (1): A: "We need to hurry." B: [+] <em>Relax.</em> We have time.</p>
+      <div id="b-gram-a"></div>
+    </div>
+  </div>
+
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:var(--amb-l)">👥</div><div><h2>Exercise 1b — Object pronouns</h2><p>Write the correct pronoun: me, him, her, it, us, you, them</p></div></div>
+    <div class="xcard-body" id="b-gram-b"></div>
+  </div>
+
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#FEE2E2">🎥</div><div><h2>Exercise 1c — Pronouns in movie stories</h2><p>Write the correct subject or object pronoun</p></div></div>
+    <div class="xcard-body" id="b-gram-c"></div>
+  </div>
+</div>
+
+<!-- VOCABULARY -->
+<div id="tvoc" class="sec">
+  <div class="scorebar"><span class="sl">Score</span><span class="sv" id="sc-voc">0 / 0</span><button class="rst" onclick="resetSec('tvoc','voc')">Reset</button></div>
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#FEE2E2">🎬</div><div><h2>Exercise 2a — Kinds of movies</h2><p>Choose the correct film genre for each description</p></div></div>
+    <div class="xcard-body">
+      <p class="note">Example (1): exciting fights and car chases → <em>an action movie</em></p>
+      <div id="b-voc-a"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRONUNCIATION -->
+<div id="tpron" class="sec">
+  <div class="scorebar"><span class="sl">Score</span><span class="sv" id="sc-pron">0 / 0</span><button class="rst" onclick="resetSec('tpron','pron')">Reset</button></div>
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#FEE2E2">🎧</div><div><h2>Exercise 3 — Track 7.2 — Sentence rhythm</h2><p>Listen and choose the correct word to complete each sentence</p></div></div>
+    <div class="xcard-body">
+      <div class="audio-box">
+        <button class="play-btn" onclick="playAudio('a1',this)"><svg viewBox="0 0 16 16" fill="white"><path d="M4 3l9 5-9 5V3z"/></svg></button>
+        <div class="audio-info"><div class="at">Track 7.2</div><div class="as">Listen, then answer below</div><div class="audio-bar"><div class="audio-fill" id="pf-a1"></div></div></div>
+      </div>
+      <p class="note">The conversation is about a famous actor. Focus on the object pronouns (him, them, etc.) and the sentence rhythm.</p>
+      <div id="b-pron"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PHRASES -->
+<div id="twords" class="sec">
+  <div class="scorebar"><span class="sl">Score</span><span class="sv" id="sc-words">0 / 0</span><button class="rst" onclick="resetSec('twords','words')">Reset</button></div>
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#FEE2E2">💬</div><div><h2>Exercise 4 — Words and phrases to learn</h2><p>Choose the correct phrase to complete each conversation</p></div></div>
+    <div class="xcard-body">
+      <div class="phrase-box">be quiet &nbsp;·&nbsp; don't cry &nbsp;·&nbsp; Don't move &nbsp;·&nbsp; don't say anything &nbsp;·&nbsp; I don't remember &nbsp;·&nbsp; What about</div>
+      <div id="b-words"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SUBMIT -->
+<div id="tsub" class="sec">
+  <div class="submit-card">
+    <h3>Submit Unit 7B</h3>
+    <p>Your teacher will receive your name, score, and all your answers on Telegram.</p>
+    <div class="score-grid">
+      <div class="sc-box"><div class="sv" id="tot-r">0</div><div class="sl">correct</div></div>
+      <div class="sc-box"><div class="sv" id="tot-t">0</div><div class="sl">total</div></div>
+      <div class="sc-box"><div class="sv" id="tot-p">0%</div><div class="sl">score</div></div>
+    </div>
+    <button class="sub-btn" id="sub-btn" onclick="submitWork()">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 9l13 0M10 4l5 5-5 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Send to teacher
+    </button>
+    <div class="sent" id="sent-msg"></div>
+    <p style="font-size:11px;color:var(--txt2);margin-top:12px;text-align:center">Enter your name before submitting</p>
+  </div>
+</div>
+
+</div></div>
+<script>
+const CHATID='5570220345';
+const audios={};
+const S={};
+function sk(k){if(!S[k])S[k]={r:0,t:0,ans:[]};}
+function addS(k,ok,q,ua,ca){sk(k);S[k].t++;if(ok)S[k].r++;S[k].ans.push({q:q.replace(/<[^>]+>/g,''),ua,ca,ok});}
+function getPrefix(k){return ['gram','voc','pron','words'].find(p=>k.startsWith(p));}
+function updateSc(k){
+  const p=getPrefix(k);if(!p)return;
+  let r=0,t=0;Object.keys(S).filter(x=>x.startsWith(p)).forEach(x=>{r+=S[x].r;t+=S[x].t;});
+  const el=document.getElementById('sc-'+p);if(el)el.textContent=r+' / '+t;
+}
+function showTab(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');btn.classList.add('on');
+  if(id==='tsub')updateSummary();
+}
+function updateSummary(){
+  let r=0,t=0;Object.values(S).forEach(v=>{r+=v.r;t+=v.t;});
+  document.getElementById('tot-r').textContent=r;
+  document.getElementById('tot-t').textContent=t;
+  document.getElementById('tot-p').textContent=t>0?Math.round(r/t*100)+'%':'0%';
+}
+function resetSec(sid,sk2){
+  const sec=document.getElementById(sid);
+  sec.querySelectorAll('input').forEach(i=>{i.value='';i.disabled=false;i.className='';});
+  sec.querySelectorAll('.opt').forEach(o=>{o.className='opt';o.disabled=false;});
+  sec.querySelectorAll('.fb').forEach(f=>{f.textContent='';f.className='fb';});
+  Object.keys(S).filter(k=>k.startsWith(sk2)).forEach(k=>delete S[k]);
+  const el=document.getElementById('sc-'+sk2);if(el)el.textContent='0 / 0';
+}
+function norm(s){return s.replace(/[''`]/g,"'").replace(/[^a-z0-9 ']/gi,'').trim().toLowerCase().replace(/  +/g,' ');}
+function mcqBlock(el,qs,prefix){
+  qs.forEach((q,i)=>{
+    if(i>0){const hr=document.createElement('hr');hr.className='divhr';el.appendChild(hr);}
+    const d=document.createElement('div');d.className='q-item';
+    const key=prefix+i;
+    const ql=document.createElement('div');ql.className='ql';
+    const qnum=document.createElement('div');qnum.className='qnum';qnum.textContent=q.num||i+1;
+    const qtxt=document.createElement('span');qtxt.innerHTML=q.q;
+    ql.appendChild(qnum);ql.appendChild(qtxt);d.appendChild(ql);
+    const opts=document.createElement('div');opts.className='opts';
+    q.opts.forEach(opt=>{
+      const btn=document.createElement('button');btn.className='opt';
+      btn.dataset.ans=q.ans;btn.dataset.key=key;btn.dataset.v=opt;btn.dataset.qq=q.q;
+      btn.innerHTML='<div class="ob"></div>'+opt;
+      btn.onclick=pickMCQ;opts.appendChild(btn);
+    });
+    d.appendChild(opts);
+    const fb=document.createElement('div');fb.className='fb';fb.id='fb-'+key;d.appendChild(fb);
+    el.appendChild(d);
+  });
+}
+function pickMCQ(e){
+  const btn=e.currentTarget;
+  const p=btn.closest('.q-item');if(p.querySelector('.ok,.no'))return;
+  const ans=btn.dataset.ans,key=btn.dataset.key,val=btn.dataset.v,qq=btn.dataset.qq;
+  const ok=norm(val)===norm(ans);
+  btn.classList.add(ok?'ok':'no');
+  const fb=document.getElementById('fb-'+key);
+  if(!ok){
+    p.querySelectorAll('.opt').forEach(b=>{if(norm(b.dataset.v)===norm(ans))b.classList.add('hl');});
+    if(fb)fb.innerHTML='<span class="fb no">✗ Correct: <strong>'+ans+'</strong></span>';
+  } else {
+    if(fb)fb.innerHTML='<span class="fb ok">✓ Correct!</span>';
+  }
+  addS(key,ok,qq,val,ans);updateSc(key);
+}
+function fillBlock(el,qs,prefix){
+  qs.forEach((q,i)=>{
+    if(i>0){const hr=document.createElement('hr');hr.className='divhr';el.appendChild(hr);}
+    const d=document.createElement('div');d.className='q-item';
+    const key=prefix+i;
+    const ql=document.createElement('div');ql.className='ql';
+    const qnum=document.createElement('div');qnum.className='qnum';qnum.textContent=q.num||i+1;
+    const qtxt=document.createElement('span');qtxt.innerHTML=q.q;
+    ql.appendChild(qnum);ql.appendChild(qtxt);
+    const inp=document.createElement('input');
+    inp.type='text';inp.placeholder='Type your answer...';
+    inp.dataset.key=key;inp.dataset.ans=q.ans;inp.dataset.qq=q.q;
+    const btn=document.createElement('button');btn.className='chk';btn.textContent='Check';
+    const fb=document.createElement('div');fb.className='fb';fb.id='fb-'+key;
+    const row=document.createElement('div');row.className='text-row';
+    row.appendChild(inp);row.appendChild(btn);
+    d.appendChild(ql);d.appendChild(row);d.appendChild(fb);
+    btn.onclick=()=>checkFill(inp);
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')checkFill(inp);});
+    el.appendChild(d);
+  });
+}
+function checkFill(inp){
+  if(inp.disabled)return;
+  const key=inp.dataset.key,ans=inp.dataset.ans,qq=inp.dataset.qq;
+  const ua=inp.value.trim();
+  const ok=norm(ua)===norm(ans);
+  inp.className=ok?'ok':'no';
+  inp.disabled=true;
+  const fb=document.getElementById('fb-'+key);
+  if(fb){
+    if(ok)fb.innerHTML='<span class="fb ok">✓ Correct!</span>';
+    else fb.innerHTML='<span class="fb no">✗ Correct: <strong>'+ans+'</strong></span>';
+  }
+  addS(key,ok,qq,ua,ans);updateSc(key);
+}
+function playAudio(id,btn){
+  const a=audios[id];if(!a){alert('Audio loading, please try again.');return;}
+  const pf=document.getElementById('pf-'+id);
+  if(!a.paused){a.pause();btn.innerHTML='<svg viewBox="0 0 16 16" fill="white"><path d="M4 3l9 5-9 5V3z"/></svg>';return;}
+  Object.values(audios).forEach(x=>{try{x.pause();}catch(e){}});
+  document.querySelectorAll('.play-btn').forEach(b=>b.innerHTML='<svg viewBox="0 0 16 16" fill="white"><path d="M4 3l9 5-9 5V3z"/></svg>');
+  a.play().catch(()=>alert('Tap again to play'));
+  btn.innerHTML='<svg viewBox="0 0 16 16" fill="white"><rect x="3" y="3" width="3" height="10" rx="1"/><rect x="10" y="3" width="3" height="10" rx="1"/></svg>';
+  a.ontimeupdate=()=>{if(pf&&a.duration)pf.style.width=(a.currentTime/a.duration*100)+'%';};
+  a.onended=()=>{btn.innerHTML='<svg viewBox="0 0 16 16" fill="white"><path d="M4 3l9 5-9 5V3z"/></svg>';if(pf)pf.style.width='0%';};
+}
+async function submitWork(){
+  const name=document.getElementById('sname').value.trim();
+  if(!name){alert('Please enter your full name at the top first!');return;}
+  const btn=document.getElementById('sub-btn');
+  btn.disabled=true;btn.textContent='Sending...';
+  let r=0,t=0;Object.values(S).forEach(v=>{r+=v.r;t+=v.t;});
+  const pct=t>0?Math.round(r/t*100):0;
+  const now=new Date();
+  const dateStr=now.toLocaleDateString('en-US',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
+  const timeStr=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  const NL='\n';const DIV='────────────────────────────';
+  const medal=pct===100?'🏆':pct>=80?'🥇':pct>=60?'🥈':'🥉';
+  const starStr='⭐'.repeat(Math.round(pct/20))+'☆'.repeat(5-Math.round(pct/20));
+  let msg='📚 <b>HOMEWORK RESULTS</b>'+NL+DIV+NL;
+  msg+='👤 <b>Student:</b> '+name+NL+'📅 <b>Date:</b> '+dateStr+NL+'⏰ <b>Time:</b> '+timeStr+NL;
+  msg+='<b>Unit:</b> 7B — Lights, camera, action!'+NL+DIV+NL;
+  msg+=medal+' <b>Score: '+r+'/'+t+' ('+pct+'%)</b>'+NL+starStr+NL+DIV+NL;
+  const secNames={gram:'📝 Grammar',voc:'🎬 Vocabulary',pron:'🔊 Pronunciation',words:'💬 Phrases'};
+  ['gram','voc','pron','words'].forEach(sec=>{
+    const keys=Object.keys(S).filter(k=>k.startsWith(sec));
+    if(!keys.length)return;
+    let sr=0,st=0;keys.forEach(k=>{sr+=S[k].r;st+=S[k].t;});
+    msg+=NL+secNames[sec]+': <b>'+sr+'/'+st+' ('+Math.round(sr/st*100)+'%)</b>'+NL;
+    keys.forEach(k=>{S[k].ans.forEach(a=>{
+      const qshort=a.q.replace(/<[^>]+>/g,'').substring(0,40);
+      msg+=(a.ok?'✅':'❌')+' '+qshort+NL;
+      if(!a.ok)msg+='    ↳ Your: "'+a.ua+'" | Correct: '+a.ca+NL;
+    });});
+  });
+  msg+=NL+DIV+NL;
+  if(pct===100)msg+='🎉 <b>Perfect score! Excellent work, '+name+'!</b>';
+  else if(pct>=80)msg+='👏 <b>Great job, '+name+'! Almost perfect!</b>';
+  else if(pct>=60)msg+='👍 <b>Good effort, '+name+'! Keep it up!</b>';
+  else msg+='💪 <b>Keep practicing, '+name+'! You can do it!</b>';
+  try{
+    const res=await fetch('/.netlify/functions/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chatId:CHATID,text:msg,parse_mode:'HTML'})});
+    const data=await res.json();
+    if(data.ok){
+      document.getElementById('sent-msg').style.display='block';
+      document.getElementById('sent-msg').innerHTML='✔ Submitted! Teacher notified.<br><strong>'+name+' — '+r+'/'+t+' ('+pct+'%)</strong>';
+      btn.style.display='none';
+    }else{btn.disabled=false;btn.textContent='Send to teacher';alert('Error: '+JSON.stringify(data));}
+  }catch(e){btn.disabled=false;btn.textContent='Send to teacher';alert('Network error: '+e.message);}
+}
+
+// ── DATA ──────────────────────────────────────────────────────────────────
+
+// 1a: Imperatives (items 2–10)
+const gramAData=[
+  {q:'"Is that movie good?" "No, it isn\'t." [−] "___ it."',opts:["Don't watch","Don't eat","Don't use","Don't open"],ans:"Don't watch",num:2},
+  {q:'"I\'m tired." [+] "___ to bed. It\'s late."',opts:['Go','Sit','Listen','Open'],ans:'Go',num:3},
+  {q:'"Is that a good phone?" "No." [−] "___ it."',opts:["Don't buy","Don't use","Don't eat","Don't open"],ans:"Don't buy",num:4},
+  {q:'"Is that pasta for me?" "No, it isn\'t." [−] "___ it."',opts:["Don't eat","Don't use","Don't buy","Don't watch"],ans:"Don't eat",num:5},
+  {q:'"Can I come in?" "Yes, of course." [+] "Please ___ down."',opts:['Sit','Go','Open','Listen'],ans:'Sit',num:6},
+  {q:'"Is this milk OK?" "No, it isn\'t." [−] "___ it."',opts:["Don't use","Don't eat","Don't buy","Don't watch"],ans:"Don't use",num:7},
+  {q:'[+] "___ your books to page 32." "Sorry, which page?"',opts:['Open','Listen','Sit','Go'],ans:'Open',num:8},
+  {q:'"Am I late?" [−] "No, ___ . Class starts in five minutes."',opts:["Don't worry","Don't listen","Don't sit","Don't use"],ans:"Don't worry",num:9},
+  {q:'[+] "___ to me. This is very important." "OK. What is it?"',opts:['Listen','Open','Go','Sit'],ans:'Listen',num:10},
+];
+
+// 1b: Object pronouns
+const gramBData=[
+  {q:'I always say hello to Ryan, but he never talks to ___.', opts:['me','him','her','them'],ans:'me',num:1},
+  {q:'Emily loves her boyfriend, but I don\'t think he loves ___.', opts:['her','him','me','them'],ans:'her',num:2},
+  {q:'We go to my parents\' house every weekend, but they never visit ___.', opts:['us','them','me','you'],ans:'us',num:3},
+  {q:'You often make dinner for me, but I never cook for ___.', opts:['you','him','me','them'],ans:'you',num:4},
+  {q:'I like the people I work with, but I never go out with ___.', opts:['them','him','her','us'],ans:'them',num:5},
+  {q:'My grandmother has a cell phone, but she never uses ___.', opts:['it','them','him','her'],ans:'it',num:6},
+  {q:'I know Jessica\'s husband, but I don\'t like ___.', opts:['him','her','them','it'],ans:'him',num:7},
+  {q:'Where are my glasses? I need ___ to read the newspaper.', opts:['them','it','him','her'],ans:'them',num:8},
+];
+
+// 1c: Pronouns in three movie stories
+const gramCData=[
+  {q:'👻 GHOST — Sam never says "I love ¹___." (to Molly)',opts:['you','her','him','them'],ans:'you',num:1},
+  {q:'Sam dies, and now ²___ is a ghost.',opts:['he','him','she','they'],ans:'he',num:2},
+  {q:'He watches Molly every day, but she can\'t see ³___.',opts:['him','he','her','them'],ans:'him',num:3},
+  {q:'He uses ⁴___ (a psychic) to speak to Molly.',opts:['her','him','she','them'],ans:'her',num:4},
+  {q:'🎭 MY FAIR LADY — He teaches ⁵___ to speak English "like a princess."',opts:['her','him','she','them'],ans:'her',num:5},
+  {q:'She falls in love with ⁶___.',opts:['him','he','her','them'],ans:'him',num:6},
+  {q:'He just thinks ⁷___ is an interesting student.',opts:['she','her','he','him'],ans:'she',num:7},
+  {q:'She is angry and leaves ⁸___.',opts:['him','he','her','them'],ans:'him',num:8},
+  {q:'🚢 TITANIC — Her family wants Rose to marry Cal because ⁹___ is rich.',opts:['he','him','she','they'],ans:'he',num:9},
+  {q:'She meets Jack Dawson, and falls in love with ¹⁰___.',opts:['him','he','her','them'],ans:'him',num:10},
+];
+
+// 2a: Kinds of movies
+const vocAData=[
+  {q:'A funny movie that makes you laugh.',opts:['a comedy','a drama','a western','an action movie'],ans:'a comedy',num:2},
+  {q:'A serious movie about real life and emotions.',opts:['a drama','a comedy','a horror movie','an animated movie'],ans:'a drama',num:3},
+  {q:'A movie with robots, spaceships, and the future.',opts:['a science fiction movie','an animated movie','a western','an action movie'],ans:'a science fiction movie',num:4},
+  {q:'A movie about cowboys in the Wild West.',opts:['a western','an action movie','a drama','a science fiction movie'],ans:'a western',num:5},
+  {q:'A scary movie that makes you frightened.',opts:['a horror movie','a comedy','a drama','a western'],ans:'a horror movie',num:6},
+  {q:'A movie made with drawings or computer-generated characters.',opts:['an animated movie','a science fiction movie','a horror movie','a comedy'],ans:'an animated movie',num:7},
+];
+
+// 3: Pronunciation — sentence rhythm (object pronouns focus)
+const pronData=[
+  {q:'A: "Do you like Daniel Craig?" B: "Yes, I ___."',opts:['do','does','am','like'],ans:'do',num:1},
+  {q:'"I think ___ a really great actor." (about Daniel Craig)',opts:["he's","him","his","he"],ans:"he's",num:2},
+  {q:'"I find ___ very attractive!" (object pronoun for Daniel Craig)',opts:['him','he','his','her'],ans:'him',num:3},
+  {q:'"Do you like ___ James Bond movies?" (possessive)',opts:['his','him','he','her'],ans:'his',num:4},
+  {q:'"Yes, I love ___!" (referring to his movies)',opts:['them','him','it','they'],ans:'them',num:5},
+];
+
+// 4: Words and phrases
+const wordsData=[
+  {q:'A: "Shh – ___ . I can\'t hear the teacher." B: "Sorry..."',opts:['be quiet',"don't cry","Don't move","I don't remember"],ans:'be quiet',num:1},
+  {q:'A: "I need to talk to you." B: "___? I\'m very busy!"',opts:['What about',"Don't move","don't say anything","I don't remember"],ans:'What about',num:2},
+  {q:'A: "Do you know Mike\'s sister\'s name?" B: "Sorry, ___."',opts:["I don't remember",'be quiet',"Don't move","don't cry"],ans:"I don't remember",num:3},
+  {q:'A: "It\'s OK – ___ . I can help you find your mom." B: "Thank you."',opts:["don't cry","Don't move","don't say anything",'be quiet'],ans:"don't cry",num:4},
+  {q:'A: "___ ! There\'s a snake over there!" B: "A snake? I can\'t see one!"',opts:["Don't move",'be quiet',"don't cry","I don't remember"],ans:"Don't move",num:5},
+  {q:'A: "Andy has a new girlfriend." B: "Yes, but ___ to his parents. It\'s a secret."',opts:["don't say anything","Don't move",'be quiet',"don't cry"],ans:"don't say anything",num:6},
+];
+
+// ── BUILD ─────────────────────────────────────────────────────────────────
+fillBlock(document.getElementById('b-gram-a'),gramAData,'gram-a');
+fillBlock(document.getElementById('b-gram-b'),gramBData,'gram-b');
+fillBlock(document.getElementById('b-gram-c'),gramCData,'gram-c');
+mcqBlock(document.getElementById('b-voc-a'),vocAData,'voc-a');
+mcqBlock(document.getElementById('b-pron'),pronData,'pron');
+mcqBlock(document.getElementById('b-words'),wordsData,'words');
+
+audios['a1']=new Audio('Workbook_Audio/AEF3e_Starter_WB_7.2.mp3');
+</script>
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Unit 7A Homework — AEF Starter</title>
+<style>
+:root{--grn:#3B6D11;--grn-l:#EAF3DE;--grn-m:#639922;--red:#A32D2D;--red-l:#FCEBEB;--red-m:#E24B4A;--gray:#5F5E5A;--gray-l:#F1EFE8;--bg:#f5f4f1;--white:#fff;--bdr:rgba(0,0,0,0.1);--txt:#1a1a18;--txt2:#5F5E5A;--r:12px;--rs:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+.app{max-width:640px;margin:0 auto;padding-bottom:3rem}
+.hero{padding:1.5rem 1.25rem 1.25rem;background:#0D6E73}
+.hero-top{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
+.hero-icon{width:48px;height:48px;border-radius:50%;background:#CCFBF1;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.hero h1{font-size:20px;font-weight:700;color:#fff}
+.hero p{font-size:13px;margin-top:2px;opacity:0.75;color:#fff}
+.name-row input{width:100%;padding:10px 13px;border-radius:var(--rs);border:none;font-size:15px;background:rgba(255,255,255,0.18);color:#fff}
+.name-row input::placeholder{color:rgba(255,255,255,0.55)}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:1rem 1rem 0;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{white-space:nowrap;padding:8px 16px;border-radius:20px;border:1px solid var(--bdr);font-size:13px;font-weight:500;cursor:pointer;background:var(--white);color:var(--txt2);transition:all .15s}
+.tab.on{background:#CCFBF1;color:#134e4a;border-color:#14B8A6}
+.content{padding:1rem}
+.sec{display:none}.sec.on{display:block}
+.scorebar{background:var(--white);border:1px solid var(--bdr);border-radius:var(--rs);padding:10px 14px;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between}
+.scorebar .sl{font-size:13px;color:var(--txt2)}
+.scorebar .sv{font-size:20px;font-weight:700;color:#0D6E73}
+.rst{padding:5px 12px;border-radius:16px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--white);color:var(--txt2)}
+.xcard{background:var(--white);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;margin-bottom:1rem}
+.xcard-head{padding:.9rem 1.1rem;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px}
+.ico{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.xcard-head h2{font-size:15px;font-weight:700}
+.xcard-head p{font-size:12px;color:var(--txt2);margin-top:2px}
+.xcard-body{padding:1rem 1.1rem}
+
+/* Picture grid for vocabulary */
+.pic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px}
+.pic-item{background:var(--gray-l);border-radius:var(--rs);overflow:hidden;border:1px solid var(--bdr)}
+.pic-img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;background:#f4f4f1}
+.pic-q{padding:8px 10px}
+.pic-q .ql{font-size:13px;margin-bottom:6px;line-height:1.5;display:flex;align-items:flex-start;gap:6px}
+.pic-q .qnum{min-width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;background:#CCFBF1;color:#134e4a}
+.pic-q .qtext{font-size:13px;line-height:1.5}
+.pic-q .qtext b{color:#0D6E73;text-decoration:underline;text-decoration-style:dotted}
+@media(max-width:480px){.pic-grid{grid-template-columns:1fr}.pic-q .qtext{font-size:14px}}
+.text-row{display:flex;gap:6px;margin-top:5px}
+.text-row input{flex:1;min-width:0;padding:7px 9px;border:1.5px solid var(--bdr);border-radius:var(--rs);font-size:13px;background:var(--white);color:var(--txt)}
+.text-row input:focus{outline:none;border-color:#0D6E73}
+.text-row input.ok{border-color:var(--grn-m);background:var(--grn-l);color:var(--grn)}
+.text-row input.no{border-color:var(--red-m)}
+.chk{padding:7px 12px;border-radius:var(--rs);border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:#0D6E73;color:#fff;white-space:nowrap;font-weight:600}
+.chk:hover{background:#0a5458}
+.fb{font-size:11px;margin-top:4px;min-height:14px}
+.fb.ok{color:var(--grn)}.fb.no{color:var(--red)}
+
+/* Grammar / Pron / Phrases */
+.q-item{margin-bottom:1rem}.q-item:last-child{margin-bottom:0}
+.ql{font-size:14px;margin-bottom:7px;line-height:1.5;display:flex;align-items:flex-start;gap:8px}
+.qnum{min-width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;background:#CCFBF1;color:#134e4a}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.opts3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.opt{padding:9px 10px;border:1px solid var(--bdr);border-radius:var(--rs);cursor:pointer;font-size:13px;background:var(--white);color:var(--txt);text-align:left;display:flex;align-items:center;gap:7px;transition:all .12s}
+.opt:hover{background:var(--gray-l)}
+.opt .ob{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--bdr);flex-shrink:0}
+.opt.ok{background:var(--grn-l);border-color:var(--grn-m)}.opt.ok .ob{background:var(--grn-m);border-color:var(--grn-m)}
+.opt.no{background:var(--red-l);border-color:var(--red-m)}.opt.no .ob{background:var(--red-m);border-color:var(--red-m)}
+.opt.hl{background:var(--grn-l);border-color:var(--grn-m);opacity:.5}.opt.hl .ob{background:var(--grn-m);border-color:var(--grn-m)}
+.gfb{font-size:12px;margin-top:5px;min-height:16px}
+.gfb.ok{color:var(--grn)}.gfb.no{color:var(--red)}
+.divhr{border:none;border-top:1px solid var(--bdr);margin:1rem 0}
+.audio-box{border-radius:var(--rs);padding:12px 14px;margin-bottom:1rem;display:flex;align-items:center;gap:12px;background:#CCFBF1}
+.play-btn{width:42px;height:42px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#0D6E73;transition:background .15s}
+.play-btn:hover{background:#0a5458}
+.play-btn svg{width:16px;height:16px}
+.audio-info{flex:1}
+.audio-info .at{font-size:13px;font-weight:600;color:#134e4a}
+.audio-info .as{font-size:12px;margin-top:1px;color:#0D6E73}
+.audio-bar{height:4px;border-radius:2px;margin-top:7px;overflow:hidden;background:#5EEAD4}
+.audio-fill{height:100%;width:0%;transition:width .1s;border-radius:2px;background:#0D6E73}
+.note{font-size:12px;color:var(--txt2);margin-bottom:12px;line-height:1.6;padding:8px 10px;background:var(--gray-l);border-radius:var(--rs)}
+.phrase-box{background:var(--gray-l);border-radius:var(--rs);padding:10px 14px;margin-bottom:14px;font-size:13px;line-height:1.9}
+.submit-card{background:var(--white);border:1px solid var(--bdr);border-radius:var(--r);padding:1.25rem;margin-top:.5rem}
+.submit-card h3{font-size:17px;font-weight:700;margin-bottom:6px}
+.submit-card p{font-size:13px;color:var(--txt2);margin-bottom:1.25rem;line-height:1.6}
+.score-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1.25rem}
+.sc-box{background:var(--gray-l);border-radius:var(--rs);padding:10px;text-align:center}
+.sc-box .sv{font-size:22px;font-weight:700;color:#0D6E73}
+.sc-box .sl{font-size:11px;color:var(--txt2);margin-top:2px}
+.sub-btn{width:100%;padding:14px;border-radius:var(--rs);border:none;background:#0D6E73;color:#fff;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
+.sub-btn:hover{background:#0a5458}
+.sub-btn:disabled{background:var(--gray);cursor:not-allowed}
+.sent{background:var(--grn-l);border:1px solid var(--grn-m);border-radius:var(--rs);padding:1rem;color:var(--grn);font-size:14px;text-align:center;display:none;line-height:1.6;font-weight:500;margin-top:1rem}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="hero">
+  <div class="hero-top">
+    <div class="hero-icon">🏖️</div>
+    <div><h1>Unit 7A Homework</h1><p>Have a nice weekend! · American English File Starter</p></div>
+  </div>
+  <div class="name-row"><input type="text" id="sname" placeholder="✏️  Enter your full name..."></div>
+</div>
+<div class="tabs">
+  <button class="tab on" onclick="showTab('tvoc',this)">🎯 Vocabulary</button>
+  <button class="tab" onclick="showTab('tgram',this)">📝 Grammar</button>
+  <button class="tab" onclick="showTab('tpron',this)">🔊 Pronunciation</button>
+  <button class="tab" onclick="showTab('twords',this)">💬 Phrases</button>
+  <button class="tab" onclick="showTab('tsub',this)">📤 Submit</button>
+</div>
+<div class="content">
+
+<div id="tvoc" class="sec on">
+  <div class="scorebar"><span class="sl">Score</span><span class="sv" id="sc-voc">0 / 0</span><button class="rst" onclick="resetVoc()">Reset</button></div>
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#CCFBF1">🎯</div><div><h2>Exercise 1a — Free time activities</h2><p>Look at each picture and complete the question</p></div></div>
+    <div class="xcard-body"><div class="pic-grid" id="b-voc"></div></div>
+  </div>
+</div>
+
+<div id="tgram" class="sec">
+  <div class="scorebar"><span class="sl">Score</span><span class="sv" id="sc-gram">0 / 0</span><button class="rst" onclick="resetSec('tgram','gram')">Reset</button></div>
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#FEF9C3">🔀</div><div><h2>Exercise 2a — Word order</h2><p>Write the words in the correct order to make a question</p></div></div>
+    <div class="xcard-body" id="b-gram-a"></div>
+  </div>
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#CCFBF1">❓</div><div><h2>Exercise 2b — Question words</h2><p>Write the correct question word</p></div></div>
+    <div class="xcard-body" id="b-gram-b"></div>
+  </div>
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#E0F2FE">✏️</div><div><h2>Exercise 2c — is, are, do, does</h2><p>Write the correct auxiliary verb</p></div></div>
+    <div class="xcard-body" id="b-gram-c"></div>
+  </div>
+</div>
+
+<div id="tpron" class="sec">
+  <div class="scorebar"><span class="sl">Score</span><span class="sv" id="sc-pron">0 / 0</span><button class="rst" onclick="resetSec('tpron','pron')">Reset</button></div>
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#CCFBF1">🎧</div><div><h2>Exercise 3a — Track 7.1 — Different sound</h2><p>Tap the word with a DIFFERENT sound from the symbol shown</p></div></div>
+    <div class="xcard-body">
+      <div class="audio-box">
+        <button class="play-btn" onclick="playAudio('a1',this)"><svg viewBox="0 0 16 16" fill="white"><path d="M4 3l9 5-9 5V3z"/></svg></button>
+        <div class="audio-info"><div class="at">Track 7.1</div><div class="as">Listen, then answer below</div><div class="audio-bar"><div class="audio-fill" id="pf-a1"></div></div></div>
+      </div>
+      <p class="note">💡 Row 1 example: /h/ sound → home, <strong>what</strong> (different — /w/), housework.</p>
+      <div id="b-pron"></div>
+    </div>
+  </div>
+</div>
+
+<div id="twords" class="sec">
+  <div class="scorebar"><span class="sl">Score</span><span class="sv" id="sc-words">0 / 0</span><button class="rst" onclick="resetSec('twords','words')">Reset</button></div>
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#CCFBF1">💬</div><div><h2>Exercise 4 — Words and phrases to learn</h2><p>Choose the correct word</p></div></div>
+    <div class="xcard-body">
+      <div class="phrase-box">definitely &nbsp;·&nbsp; depends &nbsp;·&nbsp; exciting &nbsp;·&nbsp; fan &nbsp;·&nbsp; less</div>
+      <div id="b-words"></div>
+    </div>
+  </div>
+</div>
+
+<div id="tsub" class="sec">
+  <div class="submit-card">
+    <h3>Submit Unit 7A</h3>
+    <p>Your teacher will receive your name, score, and all your answers on Telegram.</p>
+    <div class="score-grid">
+      <div class="sc-box"><div class="sv" id="tot-r">0</div><div class="sl">correct</div></div>
+      <div class="sc-box"><div class="sv" id="tot-t">0</div><div class="sl">total</div></div>
+      <div class="sc-box"><div class="sv" id="tot-p">0%</div><div class="sl">score</div></div>
+    </div>
+    <button class="sub-btn" id="sub-btn" onclick="submitWork()">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 9l13 0M10 4l5 5-5 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Send to teacher
+    </button>
+    <div class="sent" id="sent-msg"></div>
+    <p style="font-size:11px;color:var(--txt2);margin-top:12px;text-align:center">Enter your name before submitting</p>
+  </div>
+</div>
+
+</div></div>
+<script>
+const CHATID='5570220345';
+const audios={};
+const S={};
+function sk(k){if(!S[k])S[k]={r:0,t:0,ans:[]};}
+function addS(k,ok,q,ua,ca){sk(k);S[k].t++;if(ok)S[k].r++;S[k].ans.push({q:q.replace(/<[^>]+>/g,''),ua,ca,ok});}
+function getPrefix(k){return ['gram','voc','pron','words'].find(p=>k.startsWith(p));}
+function updateSc(k){
+  const p=getPrefix(k);if(!p)return;
+  let r=0,t=0;Object.keys(S).filter(x=>x.startsWith(p)).forEach(x=>{r+=S[x].r;t+=S[x].t;});
+  const el=document.getElementById('sc-'+p);if(el)el.textContent=r+' / '+t;
+}
+function showTab(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');btn.classList.add('on');
+  if(id==='tsub')updateSummary();
+}
+function updateSummary(){
+  let r=0,t=0;Object.values(S).forEach(v=>{r+=v.r;t+=v.t;});
+  document.getElementById('tot-r').textContent=r;
+  document.getElementById('tot-t').textContent=t;
+  document.getElementById('tot-p').textContent=t>0?Math.round(r/t*100)+'%':'0%';
+}
+function resetSec(sid,sk2){
+  const sec=document.getElementById(sid);
+  sec.querySelectorAll('input').forEach(i=>{i.value='';i.disabled=false;i.className='';});
+  sec.querySelectorAll('.opt').forEach(o=>{o.className='opt';o.disabled=false;});
+  sec.querySelectorAll('.fb,.gfb').forEach(f=>{f.textContent='';f.className=f.classList.contains('gfb')?'gfb':'fb';});
+  Object.keys(S).filter(k=>k.startsWith(sk2)).forEach(k=>delete S[k]);
+  const el=document.getElementById('sc-'+sk2);if(el)el.textContent='0 / 0';
+}
+function resetVoc(){
+  document.getElementById('b-voc').querySelectorAll('input').forEach(i=>{i.value='';i.disabled=false;i.className='';});
+  document.getElementById('b-voc').querySelectorAll('.fb').forEach(f=>{f.textContent='';f.className='fb';});
+  Object.keys(S).filter(k=>k.startsWith('voc')).forEach(k=>delete S[k]);
+  document.getElementById('sc-voc').textContent='0 / 0';
+}
+function norm(s){return s.replace(/[''`]/g,"'").replace(/[^a-z0-9 ']/gi,'').trim().toLowerCase().replace(/  +/g,' ');}
+
+function checkVoc(inp){
+  if(inp.disabled)return;
+  const key=inp.dataset.key,ans=inp.dataset.ans,qq=inp.dataset.qq;
+  const ua=inp.value.trim();
+  const ok=norm(ua)===norm(ans);
+  inp.className=ok?'ok':'no';inp.disabled=true;
+  const fb=document.getElementById('fb-'+key);
+  if(fb){if(ok)fb.innerHTML='<span class="fb ok">✓ Correct!</span>';
+  else fb.innerHTML='<span class="fb no">✗ Answer: <strong>'+ans+'</strong></span>';}
+  addS(key,ok,qq,ua,ans);updateSc(key);
+}
+
+function mcqBlock(el,qs,prefix,cols){
+  cols=cols||2;
+  qs.forEach((q,i)=>{
+    if(i>0){const hr=document.createElement('hr');hr.className='divhr';el.appendChild(hr);}
+    const d=document.createElement('div');d.className='q-item';
+    const key=prefix+i;
+    const ql=document.createElement('div');ql.className='ql';
+    const qnum=document.createElement('div');qnum.className='qnum';qnum.textContent=q.num||i+1;
+    const qtxt=document.createElement('span');qtxt.innerHTML=q.q;
+    ql.appendChild(qnum);ql.appendChild(qtxt);d.appendChild(ql);
+    const opts=document.createElement('div');opts.className=cols===3?'opts3':'opts';
+    q.opts.forEach(opt=>{
+      const btn=document.createElement('button');btn.className='opt';
+      btn.dataset.ans=q.ans;btn.dataset.key=key;btn.dataset.v=opt;btn.dataset.qq=q.q;
+      btn.innerHTML='<div class="ob"></div>'+opt;
+      btn.onclick=pickMCQ;opts.appendChild(btn);
+    });
+    d.appendChild(opts);
+    const fb=document.createElement('div');fb.className='gfb';fb.id='fb-'+key;d.appendChild(fb);
+    el.appendChild(d);
+  });
+}
+function pickMCQ(e){
+  const btn=e.currentTarget;
+  const p=btn.closest('.q-item');if(p.querySelector('.ok,.no'))return;
+  const ans=btn.dataset.ans,key=btn.dataset.key,val=btn.dataset.v,qq=btn.dataset.qq;
+  const ok=norm(val)===norm(ans);
+  btn.classList.add(ok?'ok':'no');
+  const fb=document.getElementById('fb-'+key);
+  if(!ok){
+    p.querySelectorAll('.opt').forEach(b=>{if(norm(b.dataset.v)===norm(ans))b.classList.add('hl');});
+    if(fb)fb.innerHTML='<span class="gfb no">✗ Correct: <strong>'+ans+'</strong></span>';
+  } else {if(fb)fb.innerHTML='<span class="gfb ok">✓ Correct!</span>';}
+  addS(key,ok,qq,val,ans);updateSc(key);
+}
+function fillBlock(el,qs,prefix){
+  qs.forEach((q,i)=>{
+    if(i>0){const hr=document.createElement('hr');hr.className='divhr';el.appendChild(hr);}
+    const d=document.createElement('div');d.className='q-item';
+    const key=prefix+i;
+    const ql=document.createElement('div');ql.className='ql';
+    const qnum=document.createElement('div');qnum.className='qnum';qnum.textContent=q.num||i+1;
+    const qtxt=document.createElement('span');qtxt.innerHTML=q.q;
+    ql.appendChild(qnum);ql.appendChild(qtxt);
+    const inp=document.createElement('input');
+    inp.type='text';inp.placeholder='Type your answer...';
+    inp.dataset.key=key;inp.dataset.ans=q.ans;inp.dataset.qq=q.q;
+    const btn=document.createElement('button');btn.className='chk';btn.textContent='Check';
+    const fb=document.createElement('div');fb.className='fb';fb.id='fb-'+key;
+    const row=document.createElement('div');row.className='text-row';
+    row.appendChild(inp);row.appendChild(btn);
+    d.appendChild(ql);d.appendChild(row);d.appendChild(fb);
+    btn.onclick=()=>checkFill(inp);
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')checkFill(inp);});
+    el.appendChild(d);
+  });
+}
+function checkFill(inp){
+  if(inp.disabled)return;
+  const key=inp.dataset.key,ans=inp.dataset.ans,qq=inp.dataset.qq;
+  const ua=inp.value.trim();
+  const ok=norm(ua)===norm(ans);
+  inp.className=ok?'ok':'no';
+  inp.disabled=true;
+  const fb=document.getElementById('fb-'+key);
+  if(fb){
+    if(ok)fb.innerHTML='<span class="fb ok">✓ Correct!</span>';
+    else fb.innerHTML='<span class="fb no">✗ Correct: <strong>'+ans+'</strong></span>';
+  }
+  addS(key,ok,qq,ua,ans);updateSc(key);
+}
+function playAudio(id,btn){
+  const a=audios[id];if(!a){alert('Audio loading, please try again.');return;}
+  const pf=document.getElementById('pf-'+id);
+  if(!a.paused){a.pause();btn.innerHTML='<svg viewBox="0 0 16 16" fill="white"><path d="M4 3l9 5-9 5V3z"/></svg>';return;}
+  Object.values(audios).forEach(x=>{try{x.pause();}catch(e){}});
+  document.querySelectorAll('.play-btn').forEach(b=>b.innerHTML='<svg viewBox="0 0 16 16" fill="white"><path d="M4 3l9 5-9 5V3z"/></svg>');
+  a.play().catch(()=>alert('Tap again to play'));
+  btn.innerHTML='<svg viewBox="0 0 16 16" fill="white"><rect x="3" y="3" width="3" height="10" rx="1"/><rect x="10" y="3" width="3" height="10" rx="1"/></svg>';
+  a.ontimeupdate=()=>{if(pf&&a.duration)pf.style.width=(a.currentTime/a.duration*100)+'%';};
+  a.onended=()=>{btn.innerHTML='<svg viewBox="0 0 16 16" fill="white"><path d="M4 3l9 5-9 5V3z"/></svg>';if(pf)pf.style.width='0%';};
+}
+async function submitWork(){
+  const name=document.getElementById('sname').value.trim();
+  if(!name){alert('Please enter your full name at the top first!');return;}
+  const btn=document.getElementById('sub-btn');btn.disabled=true;btn.textContent='Sending...';
+  let r=0,t=0;Object.values(S).forEach(v=>{r+=v.r;t+=v.t;});
+  const pct=t>0?Math.round(r/t*100):0;
+  const now=new Date();
+  const dateStr=now.toLocaleDateString('en-US',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
+  const timeStr=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  const NL='\n';const DIV='────────────────────────────';
+  const medal=pct===100?'🏆':pct>=80?'🥇':pct>=60?'🥈':'🥉';
+  const starStr='⭐'.repeat(Math.round(pct/20))+'☆'.repeat(5-Math.round(pct/20));
+  let msg='📚 <b>HOMEWORK RESULTS</b>'+NL+DIV+NL;
+  msg+='👤 <b>Student:</b> '+name+NL+'📅 <b>Date:</b> '+dateStr+NL+'⏰ <b>Time:</b> '+timeStr+NL;
+  msg+='<b>Unit:</b> 7A — Have a nice weekend!'+NL+DIV+NL;
+  msg+=medal+' <b>Score: '+r+'/'+t+' ('+pct+'%)</b>'+NL+starStr+NL+DIV+NL;
+  const secNames={gram:'📝 Grammar',voc:'🎯 Vocabulary',pron:'🔊 Pronunciation',words:'💬 Phrases'};
+  ['voc','gram','pron','words'].forEach(sec=>{
+    const keys=Object.keys(S).filter(k=>k.startsWith(sec));if(!keys.length)return;
+    let sr=0,st=0;keys.forEach(k=>{sr+=S[k].r;st+=S[k].t;});
+    msg+=NL+secNames[sec]+': <b>'+sr+'/'+st+' ('+Math.round(sr/st*100)+'%)</b>'+NL;
+    keys.forEach(k=>{S[k].ans.forEach(a=>{
+      const qshort=a.q.substring(0,40);
+      msg+=(a.ok?'✅':'❌')+' '+qshort+NL;
+      if(!a.ok)msg+='    ↳ Your: "'+a.ua+'" | Correct: '+a.ca+NL;
+    });});
+  });
+  msg+=NL+DIV+NL;
+  if(pct===100)msg+='🎉 <b>Perfect score! Excellent work, '+name+'!</b>';
+  else if(pct>=80)msg+='👏 <b>Great job, '+name+'! Almost perfect!</b>';
+  else if(pct>=60)msg+='👍 <b>Good effort, '+name+'! Keep it up!</b>';
+  else msg+='💪 <b>Keep practicing, '+name+'! You can do it!</b>';
+  try{
+    const res=await fetch('/.netlify/functions/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chatId:CHATID,text:msg,parse_mode:'HTML'})});
+    const data=await res.json();
+    if(data.ok){document.getElementById('sent-msg').style.display='block';document.getElementById('sent-msg').innerHTML='✔ Submitted! Teacher notified.<br><strong>'+name+' — '+r+'/'+t+' ('+pct+'%)</strong>';btn.style.display='none';}
+    else{btn.disabled=false;btn.textContent='Send to teacher';alert('Error: '+JSON.stringify(data));}
+  }catch(e){btn.disabled=false;btn.textContent='Send to teacher';alert('Network error: '+e.message);}
+}
+
+const PIC_IMAGES=[
+  {src:'images/unit7a/vocab-01-sports.png',alt:'sports equipment and a player'},
+  {src:'images/unit7a/vocab-02-go-out.png',alt:'people going out at night'},
+  {src:'images/unit7a/vocab-03-hike.png',alt:'hikers in the mountains'},
+  {src:'images/unit7a/vocab-04-computer-games.png',alt:'person playing computer games'},
+  {src:'images/unit7a/vocab-05-travel.png',alt:'travelers with suitcases at an airport'},
+  {src:'images/unit7a/vocab-06-piano.png',alt:'person playing the piano'},
+  {src:'images/unit7a/vocab-07-read.png',alt:'person reading at home'},
+  {src:'images/unit7a/vocab-08-tennis.png',alt:'tennis player on a court'},
+  {src:'images/unit7a/vocab-09-cafe-friends.png',alt:'friends meeting in a cafe'},
+  {src:'images/unit7a/vocab-10-swim.png',alt:'person swimming'},
+  {src:'images/unit7a/vocab-11-home.png',alt:'person staying at home'},
+  {src:'images/unit7a/vocab-12-beach.png',alt:'people at the beach'}
+];
+
+
+// ── VOCABULARY DATA ────────────────────────────────────────────────────────
+const vocData=[
+  {q:'Do you play <b>___ ___</b>?', hint:'e.g. play + sport', ans:'sports', num:1},
+  {q:'Do you go <b>___</b> on Friday nights?', hint:'2 letters', ans:'out', num:2},
+  {q:'Do you <b>___</b> in the mountains?', hint:'h___', ans:'hike', num:3},
+  {q:'Do you play <b>___</b> games after school?', hint:'c______', ans:'computer', num:4},
+  {q:'Do you <b>___</b> a lot?', hint:'tr____', ans:'travel', num:5},
+  {q:'Do you play the <b>___</b>?', hint:'p____', ans:'piano', num:6},
+  {q:'Do you <b>___</b> after dinner?', hint:'r___', ans:'read', num:7},
+  {q:'Do you play <b>___</b>?', hint:'t_____', ans:'tennis', num:8},
+  {q:'Do you meet <b>___</b> in a café on weekends?', hint:'fr_____', ans:'friends', num:9},
+  {q:'Do you <b>___</b>?', hint:'sw__', ans:'swim', num:10},
+  {q:'Do you usually stay at <b>___</b> in the evening?', hint:'h___', ans:'home', num:11},
+  {q:'Do you go to the <b>___</b> in summer?', hint:'b_____', ans:'beach', num:12},
+];
+
+// ── GRAMMAR DATA ──────────────────────────────────────────────────────────
+const gramAData=[
+  {q:'Reorder: <em>where from is Alberto</em>',opts:['Where is Alberto from?','Where from is Alberto?','Is Alberto from where?','Alberto is where from?'],ans:'Where is Alberto from?',num:1},
+  {q:'Reorder: <em>how old our teacher is</em>',opts:['How old is our teacher?','How old our teacher is?','Is our teacher how old?','Our teacher is how old?'],ans:'How old is our teacher?',num:2},
+  {q:'Reorder: <em>where does work your brother</em>',opts:['Where does your brother work?','Where your brother does work?','Does where your brother work?','Where work does your brother?'],ans:'Where does your brother work?',num:3},
+  {q:'Reorder: <em>does speak Arabic Emma</em>',opts:['Does Emma speak Arabic?','Does Arabic Emma speak?','Emma does speak Arabic?','Does Emma Arabic speak?'],ans:'Does Emma speak Arabic?',num:4},
+  {q:'Reorder: <em>have a big family do you</em>',opts:['Do you have a big family?','Have you a big family?','Do have you a big family?','You do have a big family?'],ans:'Do you have a big family?',num:5},
+  {q:'Reorder: <em>is from Canada your girlfriend</em>',opts:['Is your girlfriend from Canada?','Is from Canada your girlfriend?','Your girlfriend is from Canada?','From Canada your girlfriend is?'],ans:'Is your girlfriend from Canada?',num:6},
+  {q:'Reorder: <em>what time does go to work she</em>',opts:['What time does she go to work?','What time she does go to work?','What time does go she to work?','What time go does she to work?'],ans:'What time does she go to work?',num:7},
+  {q:'Reorder: <em>are on vacation Tim and Keiko</em>',opts:['Are Tim and Keiko on vacation?','Tim and Keiko are on vacation?','On vacation are Tim and Keiko?','Are on vacation Tim and Keiko?'],ans:'Are Tim and Keiko on vacation?',num:8},
+];
+const gramBData=[
+  {q:'A: "___ does your brother live?" B: "In São Paulo."',opts:['Where','What','When'],ans:'Where',num:1},
+  {q:'A: "___ do you usually have for breakfast?" B: "Cereal, fruit, and coffee."',opts:['What','Where','When'],ans:'What',num:2},
+  {q:'A: "___ do you spell your last name?" B: "G-A-R-C-I-A."',opts:['How','Who','What'],ans:'How',num:3},
+  {q:'A: "___ do you do housework?" B: "On Sunday morning."',opts:['When','What','Who'],ans:'When',num:4},
+  {q:'A: "___ do you go to school?" B: "By bus."',opts:['How','When','Where'],ans:'How',num:5},
+  {q:'A: "___ are your children?" B: "Jaden\'s four and Madison\'s seven."',opts:['How old','How','What'],ans:'How old',num:6},
+];
+const gramCData=[
+  {q:'___ you good at playing sports?',opts:['Are','Is','Do','Does'],ans:'Are',num:1},
+  {q:'When ___ you usually meet friends?',opts:['do','does','is','are'],ans:'do',num:2},
+  {q:'___ your sister married?',opts:['Is','Are','Does','Do'],ans:'Is',num:3},
+  {q:'___ your husband play computer games?',opts:['Does','Do','Is','Are'],ans:'Does',num:4},
+  {q:'How old ___ you?',opts:['are','is','do','does'],ans:'are',num:5},
+  {q:'How ___ your girlfriend travel to work?',opts:['does','do','is','are'],ans:'does',num:6},
+  {q:'Where ___ your teacher from?',opts:['is','are','do','does'],ans:'is',num:7},
+  {q:'___ you have lunch at work?',opts:['Do','Does','Is','Are'],ans:'Do',num:8},
+];
+const pronData=[
+  {q:'Sound: /h/ (like "house"). Tap the DIFFERENT word:',opts:['who','hike','when'],ans:'when',num:2},
+  {q:'Sound: /w/ (like "witch"). Tap the DIFFERENT word:',opts:['weekend','swim','now'],ans:'now',num:3},
+  {q:'Sound: /ɜr/ (like "chair"). Tap the DIFFERENT word:',opts:['here','there','where'],ans:'here',num:4},
+  {q:'Sound: /aʊ/ (like "owl"). Tap the DIFFERENT word:',opts:['mountains','how','window'],ans:'window',num:5},
+];
+const wordsData=[
+  {q:'A: "Is it the 4th?" B: "Yes, ___ – it\'s my birthday!"',opts:['definitely','fan','depends','less'],ans:'definitely',num:1},
+  {q:'A: "Where\'s Sean?" B: "He\'s a real Lakers ___."',opts:['fan','definitely','exciting','less'],ans:'fan',num:2},
+  {q:'A: "When do you go shopping?" B: "It ___. Friday or Saturday."',opts:['depends','definitely','exciting','less'],ans:'depends',num:3},
+  {q:'A: "Do you do the same thing every evening?" B: "More or ___."',opts:['less','depends','definitely','exciting'],ans:'less',num:4},
+  {q:'A: "Can you help?" B: "Yes, but I want to do something fun and ___."',opts:['exciting','definitely','depends','less'],ans:'exciting',num:5},
+];
+
+// ── BUILD VOCABULARY GRID ─────────────────────────────────────────────────
+(function(){
+  const el=document.getElementById('b-voc');
+  vocData.forEach((q,i)=>{
+    const card=document.createElement('div');card.className='pic-item';
+    const pic=PIC_IMAGES[i];
+    const img=document.createElement('img');
+    img.className='pic-img';img.src=pic.src;img.alt=pic.alt;img.loading='lazy';
+    card.appendChild(img);
+    // Question area
+    const qa=document.createElement('div');qa.className='pic-q';
+    const key='voc'+i;
+    const ql=document.createElement('div');ql.className='ql';
+    const qnum=document.createElement('div');qnum.className='qnum';qnum.textContent=q.num;
+    const qtxt=document.createElement('span');qtxt.className='qtext';qtxt.innerHTML=q.q;
+    ql.appendChild(qnum);ql.appendChild(qtxt);qa.appendChild(ql);
+    // Input row
+    const row=document.createElement('div');row.className='text-row';
+    const inp=document.createElement('input');
+    inp.type='text';inp.placeholder=q.hint;inp.dataset.key=key;inp.dataset.ans=q.ans;inp.dataset.qq=q.q.replace(/<[^>]+>/g,'');
+    const btn=document.createElement('button');btn.className='chk';btn.textContent='✓';
+    const fb=document.createElement('div');fb.className='fb';fb.id='fb-'+key;
+    row.appendChild(inp);row.appendChild(btn);
+    qa.appendChild(row);qa.appendChild(fb);
+    card.appendChild(qa);el.appendChild(card);
+    btn.onclick=()=>checkVoc(inp);
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')checkVoc(inp);});
+  });
+})();
+
+fillBlock(document.getElementById('b-gram-a'),gramAData,'gram-a');
+fillBlock(document.getElementById('b-gram-b'),gramBData,'gram-b');
+fillBlock(document.getElementById('b-gram-c'),gramCData,'gram-c');
+mcqBlock(document.getElementById('b-pron'),pronData,'pron',3);
+mcqBlock(document.getElementById('b-words'),wordsData,'words');
+
+audios['a1']=new Audio('Workbook_Audio/AEF3e_Starter_WB_7.1.mp3');
+</script>
+</body>
+</html>
