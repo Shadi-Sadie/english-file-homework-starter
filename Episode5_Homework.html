@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Practical English Episode 5 Homework — AEF Starter</title>
+<style>
+:root{--grn:#3B6D11;--grn-l:#EAF3DE;--grn-m:#639922;--red:#A32D2D;--red-l:#FCEBEB;--red-m:#E24B4A;--gray:#5F5E5A;--gray-l:#F1EFE8;--bg:#f5f4f1;--white:#fff;--bdr:rgba(0,0,0,0.1);--txt:#1a1a18;--txt2:#5F5E5A;--r:12px;--rs:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+.app{max-width:600px;margin:0 auto;padding-bottom:3rem}
+.hero{padding:1.5rem 1.25rem 1.25rem}
+.hero-top{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
+.hero-icon{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.hero h1{font-size:20px;font-weight:700;color:#fff}
+.hero p{font-size:13px;margin-top:2px;opacity:0.75;color:#fff}
+.name-row input{width:100%;padding:10px 13px;border-radius:var(--rs);border:none;font-size:15px;background:rgba(255,255,255,0.18);color:#fff}
+.name-row input::placeholder{color:rgba(255,255,255,0.55)}
+.name-row input:focus{outline:2px solid rgba(255,255,255,0.4)}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:1rem 1rem 0;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{white-space:nowrap;padding:8px 16px;border-radius:20px;border:1px solid var(--bdr);font-size:13px;font-weight:500;cursor:pointer;background:var(--white);color:var(--txt2);transition:all .15s}
+.content{padding:1rem}
+.sec{display:none}.sec.on{display:block}
+.scorebar{background:var(--white);border:1px solid var(--bdr);border-radius:var(--rs);padding:10px 14px;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between}
+.scorebar .sl{font-size:13px;color:var(--txt2)}
+.scorebar .sv{font-size:20px;font-weight:700}
+.rst{padding:5px 12px;border-radius:16px;border:1px solid var(--bdr);font-size:12px;cursor:pointer;background:var(--white);color:var(--txt2)}
+.xcard{background:var(--white);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;margin-bottom:1rem}
+.xcard-head{padding:.9rem 1.1rem;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px}
+.ico{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.xcard-head h2{font-size:15px;font-weight:700}
+.xcard-head p{font-size:12px;color:var(--txt2);margin-top:2px}
+.xcard-body{padding:1rem 1.1rem}
+.q-item{margin-bottom:1rem}.q-item:last-child{margin-bottom:0}
+.ql{font-size:14px;margin-bottom:7px;line-height:1.5;display:flex;align-items:flex-start;gap:8px}
+.qnum{min-width:22px;height:22px;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.opts3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.opt{padding:9px 10px;border:1px solid var(--bdr);border-radius:var(--rs);cursor:pointer;font-size:13px;background:var(--white);color:var(--txt);text-align:left;display:flex;align-items:center;gap:7px;transition:all .12s}
+.opt:hover{background:var(--gray-l)}
+.opt .ob{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--bdr);flex-shrink:0}
+.opt.ok{background:var(--grn-l);border-color:var(--grn-m)}.opt.ok .ob{background:var(--grn-m);border-color:var(--grn-m)}
+.opt.no{background:var(--red-l);border-color:var(--red-m)}.opt.no .ob{background:var(--red-m);border-color:var(--red-m)}
+.opt.hl{background:var(--grn-l);border-color:var(--grn-m);opacity:.5}.opt.hl .ob{background:var(--grn-m);border-color:var(--grn-m)}
+.fb{font-size:12px;margin-top:5px;min-height:16px}
+.fb.ok{color:var(--grn)}.fb.no{color:var(--red)}
+.divhr{border:none;border-top:1px solid var(--bdr);margin:1rem 0}
+.text-row{display:flex;gap:6px;align-items:center}
+.text-row input{flex:1;min-width:0;padding:9px 11px;border:1px solid var(--bdr);border-radius:var(--rs);font-size:14px;background:var(--white);color:var(--txt)}
+.text-row input:focus{outline:2px solid var(--bdr)}
+.text-row input.ok{border-color:var(--grn-m);background:var(--grn-l);color:var(--grn)}
+.text-row input.no{border-color:var(--red-m)}
+.chk{padding:9px 14px;border-radius:var(--rs);border:1px solid var(--bdr);font-size:13px;cursor:pointer;color:#fff;white-space:nowrap;font-weight:500}
+.audio-box{border-radius:var(--rs);padding:12px 14px;margin-bottom:1rem;display:flex;align-items:center;gap:12px}
+.play-btn{width:42px;height:42px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
+.play-btn svg{width:16px;height:16px}
+.audio-info{flex:1}
+.audio-info .at{font-size:13px;font-weight:600}
+.audio-info .as{font-size:12px;margin-top:1px}
+.audio-bar{height:4px;border-radius:2px;margin-top:7px;overflow:hidden}
+.audio-fill{height:100%;width:0%;transition:width .1s;border-radius:2px}
+.note{font-size:12px;color:var(--txt2);margin-bottom:12px;line-height:1.6;padding:8px 10px;background:var(--gray-l);border-radius:var(--rs)}
+.phrase-box{background:var(--gray-l);border-radius:var(--rs);padding:10px 14px;margin-bottom:14px;font-size:13px;line-height:1.9}
+.wr-ta{width:100%;padding:9px 11px;border:1px solid var(--bdr);border-radius:var(--rs);font-size:14px;background:var(--white);color:var(--txt);resize:vertical;min-height:70px;font-family:inherit;margin-top:6px}
+.wr-ta:focus{outline:2px solid var(--bdr)}
+.submit-card{background:var(--white);border:1px solid var(--bdr);border-radius:var(--r);padding:1.25rem;margin-top:.5rem}
+.submit-card h3{font-size:17px;font-weight:700;margin-bottom:6px}
+.submit-card p{font-size:13px;color:var(--txt2);margin-bottom:1.25rem;line-height:1.6}
+.score-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1.25rem}
+.sc-box{background:var(--gray-l);border-radius:var(--rs);padding:10px;text-align:center}
+.sc-box .sv{font-size:22px;font-weight:700}
+.sc-box .sl{font-size:11px;color:var(--txt2);margin-top:2px}
+.sub-btn{width:100%;padding:14px;border-radius:var(--rs);border:none;color:#fff;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .15s}
+.sub-btn:disabled{background:var(--gray);cursor:not-allowed}
+.sent{background:var(--grn-l);border:1px solid var(--grn-m);border-radius:var(--rs);padding:1rem;color:var(--grn);font-size:14px;text-align:center;display:none;line-height:1.6;font-weight:500;margin-top:1rem}
+/* Amber theme for Episode 5 */
+.hero{background:#A16207}
+.hero-icon{background:#FEF3C7}
+.tab.on{background:#FEF3C7;color:#78350F;border-color:#D97706}
+.scorebar .sv{color:#A16207}
+.sc-box .sv{color:#A16207}
+.qnum{background:#FEF3C7;color:#78350F}
+.sub-btn{background:#A16207}.sub-btn:hover{background:#78350F}
+.chk{background:#A16207}.chk:hover{background:#78350F}
+.audio-box{background:#FEF3C7}
+.play-btn{background:#A16207}.play-btn:hover{background:#78350F}
+.audio-info .at{color:#78350F}
+.audio-info .as{color:#A16207}
+.audio-bar{background:#FDE68A}
+.audio-fill{background:#A16207}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="hero">
+  <div class="hero-top">
+    <div class="hero-icon">🎉</div>
+    <div><h1>Practical English 5</h1><p>Would you like to come? · American English File Starter</p></div>
+  </div>
+  <div class="name-row"><input type="text" id="sname" placeholder="✏️  Enter your full name..."></div>
+</div>
+
+<div class="tabs">
+  <button class="tab on" onclick="showTab('tinv',this)">🎉 Invitations</button>
+  <button class="tab" onclick="showTab('tpron',this)">🔊 Pronunciation</button>
+  <button class="tab" onclick="showTab('tphr',this)">💬 Phrases</button>
+  <button class="tab" onclick="showTab('twrite',this)">✍️ Writing</button>
+  <button class="tab" onclick="showTab('tsub',this)">📤 Submit</button>
+</div>
+
+<div class="content">
+
+<!-- INVITATIONS -->
+<div id="tinv" class="sec on">
+  <div class="scorebar"><span class="sl">Score</span><span class="sv" id="sc-inv">0 / 0</span><button class="rst" onclick="resetSec('tinv','inv')">Reset</button></div>
+
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#FEF3C7">📞</div><div><h2>Exercise 1a — Complete the conversations</h2><p>Fill in the missing word in each line</p></div></div>
+    <div class="xcard-body">
+      <p class="note">Word bank: Are · 'd · It · Let's · like · see · sugar · time · What · Would</p>
+      <div id="b-inv-a"></div>
+    </div>
+  </div>
+
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#FEF3C7">📧</div><div><h2>Exercise 1b — Complete the emails</h2><p>Choose the sentence that completes each email correctly</p></div></div>
+    <div class="xcard-body">
+      <p class="note">Angela invites Marta to lunch on Saturday. Read each reply and pick the sentence that fits.</p>
+      <div id="b-inv-b"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRONUNCIATION -->
+<div id="tpron" class="sec">
+  <div class="scorebar"><span class="sl">Score</span><span class="sv" id="sc-pron">0 / 0</span><button class="rst" onclick="resetSec('tpron','pron')">Reset</button></div>
+
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#FEF3C7">🎧</div><div><h2>Exercise 2a — Track 9.5 — Sentence rhythm</h2><p>Listen and complete the sentences</p></div></div>
+    <div class="xcard-body">
+      <div class="audio-box">
+        <button class="play-btn" onclick="playAudio('a1',this)"><svg viewBox="0 0 16 16" fill="white"><path d="M4 3l9 5-9 5V3z"/></svg></button>
+        <div class="audio-info"><div class="at">Track 9.5</div><div class="as">Would you like...?</div><div class="audio-bar"><div class="audio-fill" id="pf-a1"></div></div></div>
+      </div>
+      <p class="note">Example: "Would you <em>like</em> a <em>drink</em>?" — type the missing word(s) for each sentence, separated by commas.</p>
+      <div id="b-pron"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PHRASES -->
+<div id="tphr" class="sec">
+  <div class="scorebar"><span class="sl">Score</span><span class="sv" id="sc-phr">0 / 0</span><button class="rst" onclick="resetSec('tphr','phr')">Reset</button></div>
+
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#FEF3C7">💬</div><div><h2>Exercise 3 — Useful phrases</h2><p>Complete the conversations with a phrase from the list</p></div></div>
+    <div class="xcard-body">
+      <p class="note">Phrase bank: how about a coffee · Let's meet at six thirty · Yeah, I'd love to · Would you like a burger</p>
+      <div id="b-phr"></div>
+    </div>
+  </div>
+</div>
+
+<!-- WRITING -->
+<div id="twrite" class="sec">
+  <div class="scorebar"><span class="sl">Score</span><span class="sv" id="sc-write">0 / 0</span><button class="rst" onclick="resetSec('twrite','write')">Reset</button></div>
+
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#FEF3C7">✉️</div><div><h2>Exercise 4a — Circle the correct phrase</h2><p>Read the invitation email and choose the correct word each time</p></div></div>
+    <div class="xcard-body">
+      <div class="phrase-box">
+        <sup>1</sup><u>Hi</u> / Good morning (your name),<br><br>
+        <sup>2</sup>Would / Do you like <sup>3</sup>to come / come to dinner <sup>4</sup>in / on Friday? <sup>5</sup>I'm inviting / I invite Laila, too.<br><br>
+        <sup>6</sup>Can you come / Can come you at 7:30? I love <sup>7</sup>cooking / cook Chinese food. Do you like it?<br><br>
+        See you on Friday (I hope!).<br>Love, Serina
+      </div>
+      <div id="b-write-a"></div>
+    </div>
+  </div>
+
+  <div class="xcard">
+    <div class="xcard-head"><div class="ico" style="background:#FEF3C7">📝</div><div><h2>Exercise 4b — Write a reply</h2><p>Write a short reply to Serina's invitation</p></div></div>
+    <div class="xcard-body" id="b-write-b"></div>
+  </div>
+</div>
+
+<!-- SUBMIT -->
+<div id="tsub" class="sec">
+  <div class="submit-card">
+    <h3>Submit Episode 5</h3>
+    <p>Your teacher will receive your name, score, and all your answers on Telegram.</p>
+    <div class="score-grid">
+      <div class="sc-box"><div class="sv" id="tot-r">0</div><div class="sl">correct</div></div>
+      <div class="sc-box"><div class="sv" id="tot-t">0</div><div class="sl">total</div></div>
+      <div class="sc-box"><div class="sv" id="tot-p">0%</div><div class="sl">score</div></div>
+    </div>
+    <button class="sub-btn" id="sub-btn" onclick="submitWork()">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 9l13 0M10 4l5 5-5 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Send to teacher
+    </button>
+    <div class="sent" id="sent-msg"></div>
+    <p style="font-size:11px;color:var(--txt2);margin-top:12px;text-align:center">Enter your name before submitting</p>
+  </div>
+</div>
+
+</div></div>
+<script>
+const CHATID='5570220345';
+const audios={};
+const S={};
+function sk(k){if(!S[k])S[k]={r:0,t:0,ans:[]};}
+function addS(k,ok,q,ua,ca){sk(k);S[k].t++;if(ok)S[k].r++;S[k].ans.push({q:q.replace(/<[^>]+>/g,''),ua,ca,ok});}
+function getPrefix(k){return ['inv','pron','phr','write'].find(p=>k.startsWith(p));}
+function updateSc(k){
+  const p=getPrefix(k);if(!p)return;
+  let r=0,t=0;Object.keys(S).filter(x=>x.startsWith(p)).forEach(x=>{r+=S[x].r;t+=S[x].t;});
+  const el=document.getElementById('sc-'+p);if(el)el.textContent=r+' / '+t;
+}
+function showTab(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');btn.classList.add('on');
+  if(id==='tsub')updateSummary();
+}
+function updateSummary(){
+  let r=0,t=0;Object.values(S).forEach(v=>{r+=v.r;t+=v.t;});
+  document.getElementById('tot-r').textContent=r;
+  document.getElementById('tot-t').textContent=t;
+  document.getElementById('tot-p').textContent=t>0?Math.round(r/t*100)+'%':'0%';
+}
+function resetSec(sid,sk2){
+  const sec=document.getElementById(sid);
+  sec.querySelectorAll('input').forEach(i=>{i.value='';i.disabled=false;i.className='';});
+  sec.querySelectorAll('textarea').forEach(t=>{t.value='';t.disabled=false;});
+  sec.querySelectorAll('.opt').forEach(o=>{o.className='opt';o.disabled=false;});
+  sec.querySelectorAll('.fb').forEach(f=>{f.textContent='';f.className='fb';});
+  sec.querySelectorAll('.chk').forEach(b=>{b.disabled=false;});
+  Object.keys(S).filter(k=>k.startsWith(sk2)).forEach(k=>delete S[k]);
+  const el=document.getElementById('sc-'+sk2);if(el)el.textContent='0 / 0';
+}
+function norm(s){return s.replace(/[''`]/g,"'").replace(/[^a-z0-9 ']/gi,'').trim().toLowerCase().replace(/  +/g,' ');}
+function ansMatch(ua,ans){return ans.split('|').some(a=>norm(ua)===norm(a));}
+
+function fillBlock(el,qs,prefix){
+  qs.forEach((q,i)=>{
+    if(i>0){const hr=document.createElement('hr');hr.className='divhr';el.appendChild(hr);}
+    const d=document.createElement('div');d.className='q-item';
+    const key=prefix+i;
+    const ql=document.createElement('div');ql.className='ql';
+    const qnum=document.createElement('div');qnum.className='qnum';qnum.textContent=q.num||i+1;
+    const qtxt=document.createElement('span');qtxt.innerHTML=q.q;
+    ql.appendChild(qnum);ql.appendChild(qtxt);
+    const inp=document.createElement('input');
+    inp.type='text';inp.placeholder='Type your answer...';
+    inp.dataset.key=key;inp.dataset.ans=q.ans;inp.dataset.qq=q.q;
+    const btn=document.createElement('button');btn.className='chk';btn.textContent='Check';
+    const fb=document.createElement('div');fb.className='fb';fb.id='fb-'+key;
+    const row=document.createElement('div');row.className='text-row';
+    row.appendChild(inp);row.appendChild(btn);
+    d.appendChild(ql);d.appendChild(row);d.appendChild(fb);
+    btn.onclick=()=>checkFill(inp);
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')checkFill(inp);});
+    el.appendChild(d);
+  });
+}
+function checkFill(inp){
+  if(inp.disabled)return;
+  const key=inp.dataset.key,ans=inp.dataset.ans,qq=inp.dataset.qq;
+  const ua=inp.value.trim();
+  const ok=ansMatch(ua,ans);
+  inp.className=ok?'ok':'no';
+  inp.disabled=true;
+  const fb=document.getElementById('fb-'+key);
+  if(fb){
+    if(ok)fb.innerHTML='<span class="fb ok">✓ Correct!</span>';
+    else fb.innerHTML='<span class="fb no">✗ Correct: <strong>'+ans.split('|')[0]+'</strong></span>';
+  }
+  addS(key,ok,qq,ua,ans.split('|')[0]);updateSc(key);
+}
+function mcqBlock(el,qs,prefix,cols){
+  qs.forEach((q,i)=>{
+    if(i>0){const hr=document.createElement('hr');hr.className='divhr';el.appendChild(hr);}
+    const d=document.createElement('div');d.className='q-item';
+    const key=prefix+i;
+    const ql=document.createElement('div');ql.className='ql';
+    const qnum=document.createElement('div');qnum.className='qnum';qnum.textContent=q.num||i+1;
+    const qtxt=document.createElement('span');qtxt.innerHTML=q.q;
+    ql.appendChild(qnum);ql.appendChild(qtxt);d.appendChild(ql);
+    const opts=document.createElement('div');opts.className=cols===3?'opts3':'opts';
+    q.opts.forEach(opt=>{
+      const btn=document.createElement('button');btn.className='opt';
+      btn.dataset.ans=q.ans;btn.dataset.key=key;btn.dataset.v=opt;btn.dataset.qq=q.q;
+      btn.innerHTML='<div class="ob"></div>'+opt;
+      btn.onclick=pickMCQ;opts.appendChild(btn);
+    });
+    d.appendChild(opts);
+    const fb=document.createElement('div');fb.className='fb';fb.id='fb-'+key;d.appendChild(fb);
+    el.appendChild(d);
+  });
+}
+function pickMCQ(e){
+  const btn=e.currentTarget;
+  const p=btn.closest('.q-item');if(p.querySelector('.ok,.no'))return;
+  const ans=btn.dataset.ans,key=btn.dataset.key,val=btn.dataset.v,qq=btn.dataset.qq;
+  const ok=ansMatch(val,ans);
+  btn.classList.add(ok?'ok':'no');
+  const fb=document.getElementById('fb-'+key);
+  if(!ok){
+    p.querySelectorAll('.opt').forEach(b=>{if(ansMatch(b.dataset.v,ans))b.classList.add('hl');});
+    if(fb)fb.innerHTML='<span class="fb no">✗ Correct: <strong>'+ans.split('|')[0]+'</strong></span>';
+  } else {if(fb)fb.innerHTML='<span class="fb ok">✓ Correct!</span>';}
+  addS(key,ok,qq,val,ans.split('|')[0]);updateSc(key);
+}
+function writeBlock(el,qs,prefix){
+  qs.forEach((q,i)=>{
+    if(i>0){const hr=document.createElement('hr');hr.className='divhr';el.appendChild(hr);}
+    const d=document.createElement('div');d.className='q-item';
+    const key=prefix+i;
+    const ql=document.createElement('div');ql.className='ql';
+    const qnum=document.createElement('div');qnum.className='qnum';qnum.textContent=i+1;
+    const qtxt=document.createElement('span');qtxt.textContent=q;
+    ql.appendChild(qnum);ql.appendChild(qtxt);
+    const ta=document.createElement('textarea');ta.className='wr-ta';ta.placeholder='Write your answer here...';
+    const row=document.createElement('div');row.className='text-row';row.style.marginTop='7px';
+    const btn=document.createElement('button');btn.className='chk';btn.textContent='Save';
+    const fb=document.createElement('div');fb.className='fb';fb.id='fb-'+key;
+    btn.onclick=()=>{
+      const val=ta.value.trim();if(!val||ta.disabled)return;
+      ta.disabled=true;btn.disabled=true;
+      fb.innerHTML='<span class="fb ok">✓ Saved</span>';
+      addS(key,true,q,val,'[open answer]');updateSc(key);
+    };
+    row.appendChild(btn);
+    d.appendChild(ql);d.appendChild(ta);d.appendChild(row);d.appendChild(fb);
+    el.appendChild(d);
+  });
+}
+function playAudio(id,btn){
+  const a=audios[id];if(!a){alert('Audio loading, please try again.');return;}
+  const pf=document.getElementById('pf-'+id);
+  if(!a.paused){a.pause();btn.innerHTML='<svg viewBox="0 0 16 16" fill="white"><path d="M4 3l9 5-9 5V3z"/></svg>';return;}
+  Object.values(audios).forEach(x=>{try{x.pause();}catch(e){}});
+  document.querySelectorAll('.play-btn').forEach(b=>b.innerHTML='<svg viewBox="0 0 16 16" fill="white"><path d="M4 3l9 5-9 5V3z"/></svg>');
+  a.play().catch(()=>alert('Tap again to play'));
+  btn.innerHTML='<svg viewBox="0 0 16 16" fill="white"><rect x="3" y="3" width="3" height="10" rx="1"/><rect x="10" y="3" width="3" height="10" rx="1"/></svg>';
+  a.ontimeupdate=()=>{if(pf&&a.duration)pf.style.width=(a.currentTime/a.duration*100)+'%';};
+  a.onended=()=>{btn.innerHTML='<svg viewBox="0 0 16 16" fill="white"><path d="M4 3l9 5-9 5V3z"/></svg>';if(pf)pf.style.width='0%';};
+}
+async function submitWork(){
+  const name=document.getElementById('sname').value.trim();
+  if(!name){alert('Please enter your full name at the top first!');return;}
+  const btn=document.getElementById('sub-btn');btn.disabled=true;btn.textContent='Sending...';
+  let r=0,t=0;Object.values(S).forEach(v=>{r+=v.r;t+=v.t;});
+  const pct=t>0?Math.round(r/t*100):0;
+  const now=new Date();
+  const dateStr=now.toLocaleDateString('en-US',{weekday:'short',year:'numeric',month:'short',day:'numeric'});
+  const timeStr=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  const NL='\n';const DIV='────────────────────────────────';
+  const medal=pct===100?'🏆':pct>=80?'🥇':pct>=60?'🥈':'🥉';
+  const starStr='⭐'.repeat(Math.round(pct/20))+'☆'.repeat(5-Math.round(pct/20));
+  let msg='📚 <b>HOMEWORK RESULTS</b>'+NL+DIV+NL;
+  msg+='👤 <b>Student:</b> '+name+NL+'📅 <b>Date:</b> '+dateStr+NL+'⏰ <b>Time:</b> '+timeStr+NL;
+  msg+='<b>Unit:</b> Practical English 5 — Would you like to come?'+NL+DIV+NL;
+  msg+=medal+' <b>Score: '+r+'/'+t+' ('+pct+'%)</b>'+NL+starStr+NL+DIV+NL;
+  const secNames={inv:'🎉 Invitations',pron:'🔊 Pronunciation',phr:'💬 Phrases',write:'✍️ Writing'};
+  ['inv','pron','phr','write'].forEach(sec=>{
+    const keys=Object.keys(S).filter(k=>k.startsWith(sec));if(!keys.length)return;
+    let sr=0,st=0;keys.forEach(k=>{sr+=S[k].r;st+=S[k].t;});
+    msg+=NL+secNames[sec]+': <b>'+sr+'/'+st+' ('+Math.round(sr/st*100)+'%)</b>'+NL;
+    keys.forEach(k=>{S[k].ans.forEach(a=>{
+      const qshort=a.q.substring(0,40);
+      msg+=(a.ok?'✅':'❌')+' '+qshort+NL;
+      if(!a.ok)msg+='    ↳ Your: "'+a.ua+'" | Correct: '+a.ca+NL;
+      else if(a.ca==='[open answer]')msg+='    ↳ "'+a.ua+'"'+NL;
+    });});
+  });
+  msg+=NL+DIV+NL;
+  if(pct===100)msg+='🎉 <b>Perfect score! Excellent work, '+name+'!</b>';
+  else if(pct>=80)msg+='👏 <b>Great job, '+name+'! Almost perfect!</b>';
+  else if(pct>=60)msg+='👍 <b>Good effort, '+name+'! Keep it up!</b>';
+  else msg+='💪 <b>Keep practicing, '+name+'! You can do it!</b>';
+  try{
+    const res=await fetch('/.netlify/functions/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chatId:CHATID,text:msg,parse_mode:'HTML'})});
+    const data=await res.json();
+    if(data.ok){document.getElementById('sent-msg').style.display='block';document.getElementById('sent-msg').innerHTML='✔ Submitted! Teacher notified.<br><strong>'+name+' — '+r+'/'+t+' ('+pct+'%)</strong>';btn.style.display='none';}
+    else{btn.disabled=false;btn.textContent='Send to teacher';alert('Error: '+JSON.stringify(data));}
+  }catch(e){btn.disabled=false;btn.textContent='Send to teacher';alert('Network error: '+e.message);}
+}
+
+// ── DATA ──────────────────────────────────────────────────────────────────
+
+// 1a: Complete the conversations (fill-in)
+const invAData=[
+  {q:'1. A: "___ you like to come to a basketball game on Saturday?" (given)',ans:'Would',num:1},
+  {q:'2. B: "What ___\'s the game?"',ans:'time',num:2},
+  {q:'3. A: "___\'s at 7:30 at the sports center."',ans:'It',num:3},
+  {q:'4. A: "Would you ___ to meet for something to eat first?"',ans:'like',num:4},
+  {q:'5. B: "Yes, OK. ___ meet at 6:30 in the snack bar."',ans:"Let's",num:5},
+  {q:'6. A: "OK, ___ you there."',ans:'See',num:6},
+  {q:'7. A: "Hi, John. ___ you hungry?"',ans:'Are',num:7},
+  {q:'8. B: "No, but I ___ like a drink." (short form of "I would")',ans:"'d",num:8},
+  {q:'9. A: "___ would you like to drink?"',ans:'What',num:9},
+  {q:'10. A: "Milk and ___?" B: "Just milk, please."',ans:'sugar',num:10},
+];
+
+// 1b: Complete the emails (MCQ — choose the sentence that fits)
+const invBData=[
+  {q:'Marta replies: "Hi Angela, ___"',opts:['My daughter goes to swim lessons at 2:00.',"Sorry! I'd love to, but lunch on Saturday isn't a good time for me."],ans:"Sorry! I'd love to, but lunch on Saturday isn't a good time for me.",num:2},
+  {q:'Marta continues: "___"',opts:['My daughter goes to swim lessons at 2:00.','Can you come at about 7:00?'],ans:'My daughter goes to swim lessons at 2:00.',num:3},
+  {q:'Angela replies: "Hi Marta, ___"',opts:['No problem. How about dinner?','See you at 7:00 on Saturday.'],ans:'No problem. How about dinner?',num:4},
+  {q:'Angela continues: "___"',opts:['Can you come at about 7:00?',"Yes, I'd love to come to dinner"],ans:'Can you come at about 7:00?',num:5},
+  {q:'Marta replies: "Hi Angela, ___"',opts:["Yes, I'd love to come to dinner",'No problem. How about dinner?'],ans:"Yes, I'd love to come to dinner",num:6},
+  {q:'Marta continues: "___"',opts:['See you at 7:00 on Saturday.','My daughter goes to swim lessons at 2:00.'],ans:'See you at 7:00 on Saturday.',num:7},
+];
+
+// 2a: Sentence rhythm dictation (fill-in, comma-separated)
+const pronData=[
+  {q:'2. "Would you ___ to ___ for ___?"',ans:'like, come, dinner',num:2},
+  {q:'3. "Would you ___ ___ to ___?"',ans:'like, something, eat',num:3},
+  {q:'4. "Would you ___ to ___ to the ___?"',ans:'like, go, movies',num:4},
+  {q:'5. "Would you ___ to play ___?"',ans:'like, soccer',num:5},
+  {q:'6. "Would you ___ ___ or a ___?"',ans:'like salad, sandwich',num:6},
+];
+
+// 3: Useful phrases (fill-in with context)
+const phrData=[
+  {q:'A: "Would you like to come to the game with me on Saturday?" B: "___. What time does it start?"',ans:"Yeah, I'd love to",num:2},
+  {q:'A: "___?" B: "No, thanks. I\'m not very hungry."',ans:'Would you like a burger',num:3},
+  {q:'A: "___ at the entrance to the movie theater." B: "OK. See you there."',ans:'Let\'s meet at six thirty',num:4},
+  {q:'A: "I don\'t want breakfast, thanks. I don\'t eat in the morning." B: "Well, ___?"',ans:'how about a coffee',num:5},
+];
+
+// 4a: Circle the correct phrase (MCQ)
+const writeAData=[
+  {q:'1. Greeting:',opts:['Hi','Good morning'],ans:'Hi',num:1},
+  {q:'2. "___ you like to come to dinner?"',opts:['Would','Do'],ans:'Would',num:2},
+  {q:'3. "Would you like ___ to dinner on Friday?"',opts:['to come','come'],ans:'to come',num:3},
+  {q:'4. "...to dinner ___ Friday?"',opts:['in','on'],ans:'on',num:4},
+  {q:'5. "___ Laila, too."',opts:["I'm inviting",'I invite'],ans:"I'm inviting",num:5},
+  {q:'6. "___ at 7:30?"',opts:['Can you come','Can come you'],ans:'Can you come',num:6},
+  {q:'7. "I love ___ Chinese food."',opts:['cooking','cook'],ans:'cooking',num:7},
+];
+
+// 4b: Write a reply (open)
+const writeBData=[
+  "Write a reply to Serina's invitation. Say if you can come, and answer her question about the food.",
+];
+
+// ── BUILD ─────────────────────────────────────────────────────────────────
+fillBlock(document.getElementById('b-inv-a'),invAData,'inv-a');
+mcqBlock(document.getElementById('b-inv-b'),invBData,'inv-b',2);
+fillBlock(document.getElementById('b-pron'),pronData,'pron');
+fillBlock(document.getElementById('b-phr'),phrData,'phr');
+mcqBlock(document.getElementById('b-write-a'),writeAData,'write-a',2);
+writeBlock(document.getElementById('b-write-b'),writeBData,'write-b');
+
+audios['a1']=new Audio('Workbook_Audio/AEF3e_Starter_WB_9.5.mp3');
+</script>
+</body>
+</html>
